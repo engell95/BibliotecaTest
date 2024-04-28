@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using AdminETL.DbModels;
+using BibliotecaApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +11,8 @@ builder.Services.AddSwaggerGen();
 
 // Configuración de Entity Framework Core con InMemoryDatabase
 builder.Services.AddDbContext<BibliotecaDbContext>(x => x.UseInMemoryDatabase("AuthorDb"));
+
+builder.Services.AddAllService();
 
 var app = builder.Build();
 
