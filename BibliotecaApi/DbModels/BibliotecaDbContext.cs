@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
-namespace AdminETL.DbModels;
+namespace BibliotecaApi.DbModels;
 public partial class BibliotecaDbContext : IdentityDbContext
 {
     public BibliotecaDbContext()
