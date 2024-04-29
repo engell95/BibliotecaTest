@@ -7,6 +7,6 @@ namespace BibliotecaApi.Services.Interface
     public interface ILibroServices
     {
         Task<ResultResponse<List<LibroDto>>> Libros();
-        //Task<ResultResponse<Libro>> Libro(int id);
+        Task<ResultResponse<LibroDto>> Libro(int id);
     }
 }
