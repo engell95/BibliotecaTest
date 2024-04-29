@@ -3,11 +3,11 @@ namespace BibliotecaApi.Dtos
 {
     public class ResultResponse<TData>: BaseResult
     {
-        public ResultResponse():base() { Data = default!; }
+        public ResultResponse():base() { Datos = default!; }
         public ResultResponse(TData data): base()
         {
-            Data = data;
+            Datos = data;
         }
-        public TData? Data {get;set;}
+        public TData? Datos {get;set;}
     }
 }

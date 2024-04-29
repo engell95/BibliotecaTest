@@ -1,12 +1,10 @@
 using System;
 using BibliotecaApi.Services.Interface;
-using Microsoft.Extensions.Options;
 using BibliotecaApi.Dtos;
 using BibliotecaApi.DbModels;
 using Microsoft.EntityFrameworkCore;
 using BibliotecaApi.Models;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
+using BibliotecaApi.Helpers;
 
 namespace BibliotecaApi.Services
 {
@@ -14,6 +12,7 @@ namespace BibliotecaApi.Services
     {
         private readonly ILogger _logger;
         private readonly BibliotecaDbContext _context;
+        private readonly string _objecto = "Autor";
 
         public AutorServices(ILogger<AutorServices> logger,BibliotecaDbContext dbContext)
         {
@@ -25,12 +24,17 @@ namespace BibliotecaApi.Services
             try
             {
                 var result = await _context.Autores.Where(x => x.Estado).ToListAsync();
-                return new ResultResponse<List<Autor>>(){StatusCode = System.Net.HttpStatusCode.OK, Message = "Datos Listados",Data = result};
+                return new ResultResponse<List<Autor>>()
+                {
+                    StatusCode = System.Net.HttpStatusCode.OK,
+                    Mensaje = Mensajes.Listado(_objecto),
+                    Datos = result
+                };
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, ex.Message);
-                return new ResultResponse<List<Autor>>(){ Message = $"Error al generar la información: {ex.Message}"};
+                return new ResultResponse<List<Autor>>(){ Mensaje = Mensajes.ErrorGenerado(ex.Message)};
             }
         }
 
@@ -40,14 +44,20 @@ namespace BibliotecaApi.Services
                 var data = await _context.Autores.FindAsync(id);
                 if(data == null)
                 {
-                    return new ResultResponse<Autor>() { Message = "No existe el dato"};
+                    return new ResultResponse<Autor>() { Mensaje = Mensajes.NoExiste(_objecto)};
                 }
-                return new ResultResponse<Autor>() { StatusCode = System.Net.HttpStatusCode.Created, Message = "Dato Generado", Data = data };
+
+                return new ResultResponse<Autor>()
+                {
+                    StatusCode = System.Net.HttpStatusCode.OK,
+                    Mensaje = Mensajes.Generado(_objecto),
+                    Datos = data
+                };
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, ex.Message);
-                return new ResultResponse<Autor>(){ Message = $"Error al generar la información: {ex.Message}"};
+                return new ResultResponse<Autor>(){ Mensaje = Mensajes.ErrorGenerado(ex.Message)};
             }
         }
 
@@ -55,15 +65,22 @@ namespace BibliotecaApi.Services
         {
             try
             {
-                var autorData = new Autor() { Nombre = autor.Nombre};
-                _context.Autores.Add(autorData);
-                await _context.SaveChangesAsync();
-                return new ResultResponse<Autor>() { StatusCode = System.Net.HttpStatusCode.Created, Message = "Autor creado correctamente", Data = autorData };
+                var data = new Autor() { Nombre = autor.Nombre};
+                _context.Autores.Add(data);
+                await GuardarCambiosAsync();
+
+                return new ResultResponse<Autor>()
+                {
+                    StatusCode = System.Net.HttpStatusCode.Created,
+                    Mensaje = Mensajes.Generado(_objecto),
+                    Datos = data
+                };
+
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, ex.Message);
-                return new ResultResponse<Autor>() { Message = $"Error al crear el autor: {ex.Message}"};
+                return new ResultResponse<Autor>() { Mensaje = Mensajes.Error("crear",_objecto,ex.Message)};
             }
         }
 
@@ -72,20 +89,26 @@ namespace BibliotecaApi.Services
             try
             {
                 
-                var data = await _context.Autores.FindAsync(id);
+                var data = await BuscarAutorAsync(id);
                 if(data == null)
                 {
-                    return new ResultResponse<Autor>() { Message = "No existe el dato"};
+                    return new ResultResponse<Autor>() { Mensaje =  Mensajes.NoExiste(_objecto)};
                 }
 
                 data.Nombre = autor.Nombre;
-                await _context.SaveChangesAsync();
-                return new ResultResponse<Autor>() { StatusCode = System.Net.HttpStatusCode.OK, Message = "Autor editado correctamente", Data = data };
+                await GuardarCambiosAsync();
+                return new ResultResponse<Autor>()
+                {
+                    StatusCode = System.Net.HttpStatusCode.OK,
+                    Mensaje = Mensajes.Editado(_objecto),
+                    Datos = data
+                };
+              
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, ex.Message);
-                return new ResultResponse<Autor>() { Message = $"Error al actualizar el autor: {ex.Message}" };
+                return new ResultResponse<Autor>() { Mensaje = Mensajes.Error("actualizar",_objecto,ex.Message) };
             }
         }
 
@@ -93,21 +116,35 @@ namespace BibliotecaApi.Services
         {
             try
             {
-                var autor = await _context.Autores.FindAsync(id);
+                var autor = await BuscarAutorAsync(id);
                 if (autor == null)
                 {
-                    return new BaseResult() { Message = "No existe el dato"};
+                    return new BaseResult() { Mensaje =  Mensajes.NoExiste(_objecto)};
                 }
 
                 autor.Estado = false;
-                await _context.SaveChangesAsync();
-                return new BaseResult() { StatusCode = System.Net.HttpStatusCode.OK, Message = "Autor eliminado correctamente" };
+                await GuardarCambiosAsync();
+                return new ResultResponse<Autor>()
+                {
+                    StatusCode = System.Net.HttpStatusCode.OK,
+                    Mensaje = Mensajes.Eliminado(_objecto)
+                };
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, ex.Message);
-                return new BaseResult() { Message = $"Error al eliminar el autor: {ex.Message}" };
+                return new BaseResult() { Mensaje = Mensajes.Error("eliminar",_objecto,ex.Message) };
             }
+        }
+
+        private async Task<Autor> BuscarAutorAsync(int id)
+        {
+            return await _context.Autores.FindAsync(id);
+        }
+
+        private async Task GuardarCambiosAsync()
+        {
+            await _context.SaveChangesAsync();
         }
 
     }

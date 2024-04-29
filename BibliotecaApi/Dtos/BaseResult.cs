@@ -5,10 +5,10 @@ namespace BibliotecaApi.Dtos
     public class BaseResult
     {
         public HttpStatusCode StatusCode {get;set;}
-        public string Message { get; set; }
+        public string Mensaje { get; set; }
         public BaseResult(){
             StatusCode = HttpStatusCode.BadRequest;
-            Message = string.Empty;
+            Mensaje = string.Empty;
         }
     }
 }
