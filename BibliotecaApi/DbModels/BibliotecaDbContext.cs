@@ -1,15 +1,9 @@
-using BibliotecaApi.DbModels;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace BibliotecaApi.DbModels;
 public partial class BibliotecaDbContext : IdentityDbContext
 {
-    public BibliotecaDbContext()
-    {
-    }
-
     public BibliotecaDbContext(DbContextOptions<BibliotecaDbContext> options)
         : base(options)
     {
@@ -22,82 +16,10 @@ public partial class BibliotecaDbContext : IdentityDbContext
     public DbSet<Prestamo> Prestamos { get; set; }
     public DbSet<AppLog> AppLogs { get; set; }
 
-    protected override void OnConfiguring
-    (DbContextOptionsBuilder optionsBuilder)
-    {
-    }
-
     protected override void OnModelCreating(ModelBuilder builder)
     {
+       
         base.OnModelCreating(builder);
-
-        var adminRoleId = "af7b9479-0880-4114-9104-45b1358e4f1b";
-        var userRoleId = "5b77cf84-4032-4409-9178-e76e16ef0f3c";
-
-        var roles = new List<IdentityRole>
-        {
-            new IdentityRole
-            {
-                Name = "Admin",
-                NormalizedName = "Admin",
-                Id = adminRoleId,
-                ConcurrencyStamp = adminRoleId
-            },
-            new IdentityRole
-            {
-                Name = "Estudiante",
-                NormalizedName = "Estudiante",
-                Id = userRoleId,
-                ConcurrencyStamp = userRoleId
-            }
-        };
-        builder.Entity<IdentityRole>().HasData(roles);
-
-        var userAdminId = "cf87c98d-5de5-49ec-ac3a-a7102f3851cf";
-        var userId = "1cb01fc4-6997-4918-8f3d-6b7c330bb7af";
-
-        var userAdmin = new IdentityUser
-        {
-            UserName = "Admin",
-            Email = "Admin@test.com",
-            NormalizedEmail = "AdminETL@test.com".ToUpper(),
-            NormalizedUserName = "Admin".ToUpper(),
-            Id = userAdminId
-        };
-        var user = new IdentityUser
-        {
-            UserName = "User",
-            Email = "User@test.com",
-            NormalizedEmail = "User@test.com".ToUpper(),
-            NormalizedUserName = "User".ToUpper(),
-            Id = userId
-        };
-
-        userAdmin.PasswordHash = new PasswordHasher<IdentityUser>()
-        .HashPassword(userAdmin,"seguro@123");
-
-        user.PasswordHash = new PasswordHasher<IdentityUser>()
-        .HashPassword(user,"seguro@123");
-        
-        var users = new List<IdentityUser<string>>{userAdmin,user};
-
-        builder.Entity<IdentityUser>().HasData(users);
-
-        var superAdminRoles = new List<IdentityUserRole<string>>
-        {
-            new IdentityUserRole<string>
-            {
-                RoleId= adminRoleId,
-                UserId= userAdminId
-            },
-            new IdentityUserRole<string>
-            {
-                RoleId= userRoleId,
-                UserId= userId
-            }
-        };
-
-        builder.Entity<IdentityUserRole<string>>().HasData(superAdminRoles);
 
         builder.Entity<Autor>(entity =>
         {
@@ -110,12 +32,7 @@ public partial class BibliotecaDbContext : IdentityDbContext
             .IsRequired()
             .HasDefaultValue(true);
 
-            entity.HasData(
-                new Autor { Id = 1, Nombre = "Autor 1" },
-                new Autor { Id = 2, Nombre = "Autor 2" },
-                new Autor { Id = 3, Nombre = "Autor 3" },
-                new Autor { Id = 4, Nombre = "Autor 4" }
-            );
+         
         });
 
         builder.Entity<Editorial>(entity =>
@@ -237,7 +154,8 @@ public partial class BibliotecaDbContext : IdentityDbContext
                 .HasMaxLength(100)
                 .IsUnicode(false);
         });
-
+       
     }
+
 
 }
