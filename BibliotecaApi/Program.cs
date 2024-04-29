@@ -8,8 +8,12 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
 using Asp.Versioning;
+using BibliotecaApi.Filters;
+using System.Text.Json.Serialization;
+
 
 var builder = WebApplication.CreateBuilder(args);
+
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -41,7 +45,11 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(options => {
+    options.Filters.Add(typeof(CustomExceptionFilter)); //Adding a global filter
+}).AddJsonOptions(x=>
+    x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles //to ignore circular references
+).AddNewtonsoftJson();
 
 // Configuración de servicios
 builder.Services.AddAllService();
