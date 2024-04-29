@@ -101,6 +101,21 @@ public class DBSeeder
 			context.AddRange(Autores);
 		}
 
+		//Editoriales
+		if (!context.Editoriales.Any())
+		{
+            var Autores = new List<Editorial> {
+			    new Editorial{Nombre = "Fondo de Cultura Económica (FCE)",Estado = true },
+				new Editorial{Nombre = "Editorial Planeta Mexicana",Estado = true },
+				new Editorial{Nombre = "Siglo XXI Editores" ,Estado = true},
+				new Editorial{Nombre = "Ediciones Castillo" ,Estado = true},
+				new Editorial{Nombre = "Editorial Diana" ,Estado = true},
+				new Editorial{Nombre = "Editorial Alfaguara México" ,Estado = true}
+		    };
+            
+			context.AddRange(Autores);
+		}
+
 		context.SaveChanges();
 	}
 
