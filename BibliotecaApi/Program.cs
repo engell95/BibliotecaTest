@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using Asp.Versioning;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -77,6 +78,20 @@ builder.Services.AddDbContext<BibliotecaDbContext>(options =>
     options.UseInMemoryDatabase("AuthorDb");
 }, ServiceLifetime.Singleton);
 
+//versionamiento
+builder.Services.AddApiVersioning(options =>
+{
+    options.DefaultApiVersion = new ApiVersion(1);
+    options.ReportApiVersions = true;
+    options.AssumeDefaultVersionWhenUnspecified = true;
+    options.ApiVersionReader = ApiVersionReader.Combine(
+        new UrlSegmentApiVersionReader(),
+        new HeaderApiVersionReader("X-Api-Version"));
+}).AddApiExplorer(options =>
+{
+    options.GroupNameFormat = "'v'V";
+    options.SubstituteApiVersionInUrl = true;
+});
 
 var app = builder.Build();
 

@@ -2,10 +2,12 @@ using System;
 using BibliotecaApi.DbModels;
 using BibliotecaApi.Services.Interface;
 using Microsoft.AspNetCore.Mvc;
+using Asp.Versioning;
 
 namespace BibliotecaApi.Controllers
 {
-    [Route("api/[controller]")]
+    [ApiVersion(1)]
+    [Route("api/v{v:apiVersion}/[controller]")]
     [ApiController]
     public class AutorController: Controller
     {
@@ -15,6 +17,7 @@ namespace BibliotecaApi.Controllers
             _autorServices = service;
         }
 
+        [MapToApiVersion(1)]
         [HttpGet()]
         public async Task<IActionResult> Autores()
         {
@@ -25,6 +28,7 @@ namespace BibliotecaApi.Controllers
             return Ok(result.Data);
         }
 
+        [MapToApiVersion(1)]
         [HttpPost()]
         public async Task<IActionResult> Autores(Autor model)
         {
