@@ -115,6 +115,25 @@ public class DBSeeder
             
 			context.AddRange(Autores);
 		}
+		
+		//Libros
+		if (!context.Libros.Any())
+		{
+            var Libros = new List<Libro> {
+			    new Libro{Nombre = "Corrientes alternas. Antología de verso y prosa",Descripcion="Una antología definitiva para adentrarse en el universo literario del mayor poeta mexicano contemporáneo",Copias = 10,Fecha_Publicacion = DateTime.Now,Id_Editorial=1,Id_Autor=1 ,Estado = true },
+				new Libro{Nombre = "El tiempo que nos hizo nos deshace",Descripcion="El tiempo que nos hizo nos deshace se integra en la colección Poesía Portátil como una selección de los versos más representativos de Octavio Paz.",Copias = 5,Fecha_Publicacion = DateTime.Now,Id_Editorial=3,Id_Autor=1 ,Estado = true },
+				new Libro{Nombre = "Obra poética (1935-1998)",Descripcion="En este volumen el lector tiene ante sí la completa producción poética de uno de los principales exponentes del género del siglo XX, además de su acercamiento a la poesía universal en calidad de traductor",Copias = 3,Fecha_Publicacion = DateTime.Now,Id_Editorial=4,Id_Autor=1 ,Estado = true },
+				new Libro{Nombre = "Libertad bajo palabra",Descripcion="En palabras del propio Octavio Paz este libro se fue haciendo poco a poco a través de los años, sin un plan fijo",Copias = 0,Fecha_Publicacion = DateTime.Now,Id_Editorial=1,Id_Autor=1 ,Estado = true },
+				new Libro{Nombre = "Pedro Páramo",Descripcion="Cuando al final de la década de los sesenta la narrativa hispanoamericana alcanzó un prestigio mundial, se volvió la vista atrás en busca de sus 'clásicos'. La figura gigantesca de Rulfo destacó inmediatamente.",Copias = 5,Fecha_Publicacion = DateTime.Now,Id_Editorial=3,Id_Autor=2 ,Estado = true },
+				new Libro{Nombre = "El llano en llamas",Descripcion="La presente edición limitada conmemora el 70 aniversario de la publicación de la obra de Juan Rulfo.",Copias = 100,Fecha_Publicacion = DateTime.Now,Id_Editorial=3,Id_Autor=2 ,Estado = true },
+				new Libro{Nombre = "Antología personal",Descripcion="Toda la obra de Juan Rulfo (1918-1986) apareció entre 1953 (fecha de publicación de El Llano en llamas) y 1955 (año de la primera edición de Pedro Páramo), entregándose en adelante el genial narrador prácticamente al silencio durante tres décadas, salvo por El gallo de oro (1980).",Copias = 5,Fecha_Publicacion = DateTime.Now,Id_Editorial=3,Id_Autor=2 ,Estado = true },
+				new Libro{Nombre = "Lo que yo vi",Descripcion="Las memorias de la gran autora del realismo mágico mexicano, la crónica de una época salpicada de nostalgia por el tiempo ido y de reflexiones sobre la consciencia del presente",Copias = 10,Fecha_Publicacion = DateTime.Now,Id_Editorial=4,Id_Autor=5 ,Estado = true },
+				new Libro{Nombre = "Como agua para chocolate",Descripcion="Y así como un poeta juega con las palabras, así ella jugaba a su antojo con los ingredientes y con las cantidades, obteniendo resultados fenomenales.» No siempre tenemos a mano los ingredientes de la felicidad.",Copias = 5,Fecha_Publicacion = DateTime.Now,Id_Editorial=4,Id_Autor=5,Estado = true },
+				new Libro{Nombre = "Contradeseo (Mapa de las lenguas)",Descripcion="Una novela para leer con el mismo afán impúdico con que sus personajes transitan los caminos del deseo. «Una novela sobre la cara más oscura de la amistad, los complicados caminos del deseo y las miserias domésticas.",Copias = 8,Fecha_Publicacion = DateTime.Now,Id_Editorial=4,Id_Autor=5,Estado = true },
+		    };
+            
+			context.AddRange(Libros);
+		}
 
 		context.SaveChanges();
 	}

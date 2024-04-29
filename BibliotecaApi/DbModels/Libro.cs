@@ -8,7 +8,7 @@ public partial class Libro
     public string Descripcion { get; set; }
     public int Copias { get; set; }
     public DateTime Fecha_Publicacion { get; set; }
-    public bool Estado { get; set; }
+    public bool Estado { get; set; } = true;
     
     public int Id_Editorial { get; set; }
     public int Id_Autor { get; set; }
