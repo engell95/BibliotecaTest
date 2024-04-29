@@ -33,6 +33,33 @@ namespace BibliotecaApi.Controllers
             var result = await _libroServices.Libro(id);
             return StatusCode((int)result.StatusCode, new { result.Mensaje, result.Datos });
         }
+
+        // POST: api/version/Libro
+        [MapToApiVersion(1)]
+        [HttpPost()]
+        public async Task<IActionResult> CrearLibro([FromBody] LibroModel model)
+        {
+            var result = await _libroServices.CrearLibro(model);
+            return StatusCode((int)result.StatusCode, new { result.Mensaje, result.Datos });
+        }
+
+        // PUT: api/version/Libro/5
+        [MapToApiVersion(1)]
+        [HttpPut("{id}")]
+        public async Task<IActionResult> ActualizarLibro(int id,LibroModel model)
+        {
+            var result = await _libroServices.ActualizarLibro(id,model);
+            return StatusCode((int)result.StatusCode, new { result.Mensaje, result.Datos });
+        }
+
+        // DELETE: api/version/Libro/5
+        [MapToApiVersion(1)]
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> EliminarLibro(int id)
+        {
+            var result = await _libroServices.EliminarLibro(id);
+            return StatusCode((int)result.StatusCode, new { result.Mensaje });
+        }
         
     }
 }

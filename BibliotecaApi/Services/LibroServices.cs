@@ -94,13 +94,104 @@ namespace BibliotecaApi.Services
                 return new ResultResponse<LibroDto>(){ Mensaje = Mensajes.ErrorGenerado(ex.Message)};
             }
         }
-
-        private async Task<Editorial> BuscarLibroAsync(int id)
+        
+        public async Task<ResultResponse<LibroDto>> CrearLibro(LibroModel libro)
         {
-            return await _context.Editoriales.FindAsync(id);
+            try
+            {
+                var data = new Libro() { 
+                    Nombre = libro.Nombre,
+                    Descripcion = libro.Descripcion,
+                    Copias = libro.Copias,
+                    Fecha_Publicacion = libro.Fecha_Publicacion,
+                    Id_Autor = libro.Id_Autor,
+                    Id_Editorial = libro.Id_Editorial,
+                    Estado = true
+                };
+                _context.Libros.Add(data);
+                await GuardarCambiosAsync();
+
+                return new ResultResponse<LibroDto>()
+                {
+                    StatusCode = System.Net.HttpStatusCode.Created,
+                    Mensaje = Mensajes.Generado(_objecto),
+                    Datos = Libro(data.Id).Result.Datos
+                };
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                return new ResultResponse<LibroDto>() { Mensaje = Mensajes.Error("crear",_objecto,ex.Message)};
+            }
+        }
+        
+        public async Task<ResultResponse<LibroDto>> ActualizarLibro(int id,LibroModel libro)
+        {
+            try
+            {
+                
+                var data = await BuscarLibroAsync(id);
+                if(data == null)
+                {
+                    return new ResultResponse<LibroDto>() { Mensaje =  Mensajes.NoExiste(_objecto)};
+                }
+
+                data.Nombre = libro.Nombre;
+                data.Descripcion = libro.Descripcion;
+                data.Fecha_Publicacion = libro.Fecha_Publicacion;
+                data.Id_Autor = libro.Id_Autor;
+                data.Id_Editorial = libro.Id_Editorial;
+                await GuardarCambiosAsync();
+                return new ResultResponse<LibroDto>()
+                {
+                    StatusCode = System.Net.HttpStatusCode.OK,
+                    Mensaje = Mensajes.Editado(_objecto),
+                    Datos = Libro(data.Id).Result.Datos
+                };
+              
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                return new ResultResponse<LibroDto>() { Mensaje = Mensajes.Error("actualizar",_objecto,ex.Message) };
+            }
         }
 
+        public async Task<BaseResult> EliminarLibro(int id)
+        {
+            try
+            {
+                var data = await BuscarLibroAsync(id);
+                if (data == null)
+                {
+                    return new BaseResult() { Mensaje =  Mensajes.NoExiste(_objecto)};
+                }
 
+                data.Estado = false;
+                await GuardarCambiosAsync();
+                return new BaseResult()
+                {
+                    StatusCode = System.Net.HttpStatusCode.OK,
+                    Mensaje = Mensajes.Eliminado(_objecto)
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                return new BaseResult() { Mensaje = Mensajes.Error("eliminar",_objecto,ex.Message) };
+            }
+        }
+
+        private async Task<Libro> BuscarLibroAsync(int id)
+        {
+            return await _context.Libros.FindAsync(id);
+        }
+        
+        private async Task GuardarCambiosAsync()
+        {
+            await _context.SaveChangesAsync();
+        }
 
     }
 }
