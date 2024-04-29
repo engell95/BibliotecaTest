@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 using BibliotecaApi.Models;
 using BibliotecaApi.Helpers;
 
-
 namespace BibliotecaApi.Services
 {
     public class EditorialServices : IEditorialServices
