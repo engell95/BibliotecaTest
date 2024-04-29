@@ -47,9 +47,9 @@ namespace BibliotecaApi.Controllers
         // PUT: api/version/Autor/5
         [MapToApiVersion(1)]
         [HttpPut("{id}")]
-        public async Task<IActionResult> ActualizarAutor(int id,AutorModel autor)
+        public async Task<IActionResult> ActualizarAutor(int id,AutorModel model)
         {
-            var result = await _autorServices.ActualizarAutor(id,autor);
+            var result = await _autorServices.ActualizarAutor(id,model);
             return StatusCode((int)result.StatusCode, new { result.Mensaje, result.Datos });
         }
 

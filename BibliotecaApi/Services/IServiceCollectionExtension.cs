@@ -8,6 +8,7 @@ namespace BibliotecaApi.Services
         public static IServiceCollection AddAllService(this IServiceCollection services)
         {
             services.AddTransient<IAutorServices, AutorServices>();
+            services.AddTransient<IEditorialServices, EditorialServices>();
             return services;
         }
     }

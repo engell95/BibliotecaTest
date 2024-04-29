@@ -6,25 +6,26 @@ using Microsoft.EntityFrameworkCore;
 using BibliotecaApi.Models;
 using BibliotecaApi.Helpers;
 
+
 namespace BibliotecaApi.Services
 {
-    public class AutorServices : IAutorServices
+    public class EditorialServices : IEditorialServices
     {
         private readonly ILogger _logger;
         private readonly BibliotecaDbContext _context;
-        private readonly string _objecto = "Autor";
+        private readonly string _objecto = "Editorial";
 
-        public AutorServices(ILogger<AutorServices> logger,BibliotecaDbContext dbContext)
+        public EditorialServices(ILogger<EditorialServices> logger,BibliotecaDbContext dbContext)
         {
             _logger = logger;
             _context = dbContext;
         }
 
-        public async Task<ResultResponse<List<Autor>>> Autores(){
+        public async Task<ResultResponse<List<Editorial>>> Editoriales(){
             try
             {
-                var result = await _context.Autores.Where(x => x.Estado).ToListAsync();
-                return new ResultResponse<List<Autor>>()
+                var result = await _context.Editoriales.Where(x => x.Estado).ToListAsync();
+                return new ResultResponse<List<Editorial>>()
                 {
                     StatusCode = System.Net.HttpStatusCode.OK,
                     Mensaje = Mensajes.Listado(_objecto),
@@ -34,20 +35,20 @@ namespace BibliotecaApi.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, ex.Message);
-                return new ResultResponse<List<Autor>>(){ Mensaje = Mensajes.ErrorGenerado(ex.Message)};
+                return new ResultResponse<List<Editorial>>(){ Mensaje = Mensajes.ErrorGenerado(ex.Message)};
             }
         }
 
-        public async Task<ResultResponse<Autor>> Autor(int id){
+        public async Task<ResultResponse<Editorial>> Editorial(int id){
             try
             {
-                var data = await BuscarAutorAsync(id);
+                var data = await BuscarEditorialAsync(id);
                 if(data == null)
                 {
-                    return new ResultResponse<Autor>() { Mensaje = Mensajes.NoExiste(_objecto)};
+                    return new ResultResponse<Editorial>() { Mensaje = Mensajes.NoExiste(_objecto)};
                 }
 
-                return new ResultResponse<Autor>()
+                return new ResultResponse<Editorial>()
                 {
                     StatusCode = System.Net.HttpStatusCode.OK,
                     Mensaje = Mensajes.Generado(_objecto),
@@ -57,19 +58,19 @@ namespace BibliotecaApi.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, ex.Message);
-                return new ResultResponse<Autor>(){ Mensaje = Mensajes.ErrorGenerado(ex.Message)};
+                return new ResultResponse<Editorial>(){ Mensaje = Mensajes.ErrorGenerado(ex.Message)};
             }
         }
 
-        public async Task<ResultResponse<Autor>> CrearAutor(AutorModel autor)
+        public async Task<ResultResponse<Editorial>> CrearEditorial(EditorialModel editorial)
         {
             try
             {
-                var data = new Autor() { Nombre = autor.Nombre};
-                _context.Autores.Add(data);
+                var data = new Editorial() { Nombre = editorial.Nombre};
+                _context.Editoriales.Add(data);
                 await GuardarCambiosAsync();
 
-                return new ResultResponse<Autor>()
+                return new ResultResponse<Editorial>()
                 {
                     StatusCode = System.Net.HttpStatusCode.Created,
                     Mensaje = Mensajes.Generado(_objecto),
@@ -80,24 +81,24 @@ namespace BibliotecaApi.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, ex.Message);
-                return new ResultResponse<Autor>() { Mensaje = Mensajes.Error("crear",_objecto,ex.Message)};
+                return new ResultResponse<Editorial>() { Mensaje = Mensajes.Error("crear",_objecto,ex.Message)};
             }
         }
 
-        public async Task<ResultResponse<Autor>> ActualizarAutor(int id,AutorModel autor)
+        public async Task<ResultResponse<Editorial>> ActualizarEditorial(int id,EditorialModel editorial)
         {
             try
             {
                 
-                var data = await BuscarAutorAsync(id);
+                var data = await BuscarEditorialAsync(id);
                 if(data == null)
                 {
-                    return new ResultResponse<Autor>() { Mensaje =  Mensajes.NoExiste(_objecto)};
+                    return new ResultResponse<Editorial>() { Mensaje =  Mensajes.NoExiste(_objecto)};
                 }
 
-                data.Nombre = autor.Nombre;
+                data.Nombre = editorial.Nombre;
                 await GuardarCambiosAsync();
-                return new ResultResponse<Autor>()
+                return new ResultResponse<Editorial>()
                 {
                     StatusCode = System.Net.HttpStatusCode.OK,
                     Mensaje = Mensajes.Editado(_objecto),
@@ -108,21 +109,21 @@ namespace BibliotecaApi.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, ex.Message);
-                return new ResultResponse<Autor>() { Mensaje = Mensajes.Error("actualizar",_objecto,ex.Message) };
+                return new ResultResponse<Editorial>() { Mensaje = Mensajes.Error("actualizar",_objecto,ex.Message) };
             }
         }
 
-        public async Task<BaseResult> EliminarAutor(int id)
+        public async Task<BaseResult> EliminarEditorial(int id)
         {
             try
             {
-                var autor = await BuscarAutorAsync(id);
-                if (autor == null)
+                var data = await BuscarEditorialAsync(id);
+                if (data == null)
                 {
                     return new BaseResult() { Mensaje =  Mensajes.NoExiste(_objecto)};
                 }
 
-                autor.Estado = false;
+                data.Estado = false;
                 await GuardarCambiosAsync();
                 return new BaseResult()
                 {
@@ -137,9 +138,9 @@ namespace BibliotecaApi.Services
             }
         }
 
-        private async Task<Autor> BuscarAutorAsync(int id)
+        private async Task<Editorial> BuscarEditorialAsync(int id)
         {
-            return await _context.Autores.FindAsync(id);
+            return await _context.Editoriales.FindAsync(id);
         }
 
         private async Task GuardarCambiosAsync()
@@ -147,7 +148,6 @@ namespace BibliotecaApi.Services
             await _context.SaveChangesAsync();
         }
 
-    }
 
-    
+    }
 }
