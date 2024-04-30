@@ -18,12 +18,10 @@ namespace BibliotecaApi.Models
         public int Copias { get; set; }
 
         [Required(ErrorMessage = "El campo {0} es requerido")]
-        [Range(1, int.MaxValue, ErrorMessage = "El campo {0} debe estar entre {1} y {2}")]
         [DisplayName("Editorial")]
         public int Id_Editorial { get; set; }
 
         [Required(ErrorMessage = "El campo {0} es requerido")]
-        [Range(1, int.MaxValue, ErrorMessage = "El campo {0} debe estar entre {1} y {2}")]
         [DisplayName("Autor")]
         public int Id_Autor { get; set; }
 
