@@ -3,6 +3,8 @@ using BibliotecaApi.Models;
 using BibliotecaApi.Services.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Asp.Versioning;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace BibliotecaApi.Controllers
 {
@@ -19,6 +21,7 @@ namespace BibliotecaApi.Controllers
         // GET: api/version/Libro
         [MapToApiVersion(1)]
         [HttpGet()]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,Roles = "Administrador,Estudiante")]
         public async Task<IActionResult> Libros()
         {
             var result = await _libroServices.Libros();
@@ -28,6 +31,7 @@ namespace BibliotecaApi.Controllers
         // GET: api/version/Libro/5
         [MapToApiVersion(1)]
         [HttpGet("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,Roles = "Administrador,Estudiante")]
         public async Task<IActionResult> Libro(int id)
         {
             var result = await _libroServices.Libro(id);
@@ -37,6 +41,7 @@ namespace BibliotecaApi.Controllers
         // POST: api/version/Libro
         [MapToApiVersion(1)]
         [HttpPost()]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,Roles = "Administrador")]
         public async Task<IActionResult> CrearLibro([FromBody] LibroModel model)
         {
             var result = await _libroServices.CrearLibro(model);
@@ -46,6 +51,7 @@ namespace BibliotecaApi.Controllers
         // PUT: api/version/Libro/5
         [MapToApiVersion(1)]
         [HttpPut("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,Roles = "Administrador")]
         public async Task<IActionResult> ActualizarLibro(int id,LibroModel model)
         {
             var result = await _libroServices.ActualizarLibro(id,model);
@@ -55,6 +61,7 @@ namespace BibliotecaApi.Controllers
         // DELETE: api/version/Libro/5
         [MapToApiVersion(1)]
         [HttpDelete("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,Roles = "Administrador")]
         public async Task<IActionResult> EliminarLibro(int id)
         {
             var result = await _libroServices.EliminarLibro(id);
