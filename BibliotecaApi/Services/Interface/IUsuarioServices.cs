@@ -6,6 +6,6 @@ namespace BibliotecaApi.Services.Interface
 {
     public interface IUsuarioServices
     {
-        Task<ResultResponse<List<dynamic>>> Usuarios();
+        Task<ResultResponse<List<UsuarioDto>>> Usuarios();
     }
 }

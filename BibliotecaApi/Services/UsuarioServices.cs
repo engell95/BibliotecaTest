@@ -24,7 +24,7 @@ namespace BibliotecaApi.Services
             this.userManager = userManager;
         }
 
-        public async Task<ResultResponse<List<dynamic>>> Usuarios(){
+        public async Task<ResultResponse<List<UsuarioDto>>> Usuarios(){
             try
             {
                 var usersData = await _context.Users.ToListAsync();
@@ -33,19 +33,21 @@ namespace BibliotecaApi.Services
                 .Select(async user =>
                 {
                     var rolesTask = await userManager.GetRolesAsync(user);
-                    dynamic dynamicUser = new ExpandoObject();
-                    dynamicUser.Roles = rolesTask.ToList();
-                    foreach (var property in user.GetType().GetProperties())
-                    {
-                        ((IDictionary<string, object>)dynamicUser)[property.Name] = property.GetValue(user);
-                    }
 
-                    return dynamicUser;
+                    var userDto = new UsuarioDto
+                    {
+                        Id = user.Id,
+                        UserName = user.UserName,
+                        Email = user.Email,
+                        Roles = rolesTask.ToList(),
+                    };
+
+                    return userDto;
                 })
                 .Select(task => task.Result)
                 .ToList();
                 
-                return new ResultResponse<List<dynamic>>()
+                return new ResultResponse<List<UsuarioDto>>()
                 {
                     StatusCode = System.Net.HttpStatusCode.OK,
                     Mensaje = Mensajes.Listado(_objecto),
@@ -55,7 +57,7 @@ namespace BibliotecaApi.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, ex.Message);
-                return new ResultResponse<List<dynamic>>(){ Mensaje = Mensajes.ErrorGenerado(ex.Message)};
+                return new ResultResponse<List<UsuarioDto>>(){ Mensaje = Mensajes.ErrorGenerado(ex.Message)};
             }
         }
 

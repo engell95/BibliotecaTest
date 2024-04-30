@@ -89,12 +89,12 @@ public class DBSeeder
 				new IdentityUserRole<string>
 				{
 					RoleId = guids[5],
-					UserId = guids[1]
+					UserId = guids[2]
 				},
 				new IdentityUserRole<string>
 				{
 					RoleId = guids[4],
-					UserId = guids[2]
+					UserId = guids[1]
 				},
 				new IdentityUserRole<string>
 				{
