@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 using BibliotecaApi.Models;
 using BibliotecaApi.Helpers;
 using Microsoft.AspNetCore.Identity;
-using System.Dynamic;
 
 namespace BibliotecaApi.Services
 {
@@ -16,7 +15,7 @@ namespace BibliotecaApi.Services
         private readonly BibliotecaDbContext _context;
         private readonly string _objecto = "Usuario";
         private readonly UserManager<IdentityUser> userManager;
-        private readonly string _defaultPassword = "seguro@123";
+        private readonly string _defaultPassword = "Seguro@123";
 
         public UsuarioServices(ILogger<UsuarioServices> logger,BibliotecaDbContext dbContext,UserManager<IdentityUser> userManager)
         {
@@ -131,5 +130,68 @@ namespace BibliotecaApi.Services
                 return new ResultResponse<UsuarioDto>() { Mensaje = Mensajes.Error("crear",_objecto,ex.Message)};
             }
         }
+    
+        public async Task<ResultResponse<UsuarioDto>> ActualizarUsuario(string id,UsuarioModel model)
+        {
+            try
+            {
+                
+                var user = await userManager.FindByIdAsync(id);
+                if (user == null)
+                {
+                    return new ResultResponse<UsuarioDto>() { Mensaje =  Mensajes.NoExiste(_objecto)};
+                }
+
+                // Update user properties
+                user.NormalizedUserName = model.NormalizedUserName;
+                user.UserName = model.Username;
+                user.Email = model.Email;
+                user.NormalizedEmail = model.Email.ToUpper();
+
+                var updateResult = await userManager.UpdateAsync(user);
+                
+                if (updateResult.Succeeded)
+                {
+                    var currentRoles = await userManager.GetRolesAsync(user);
+                    var removeRolesResult = await userManager.RemoveFromRolesAsync(user, currentRoles);
+
+                    if (removeRolesResult.Succeeded)
+                    {
+                        // Add new roles
+                        var addRoleResult = await userManager.AddToRolesAsync(user, new List<string>{model.Id_Rol});
+
+                        if (!addRoleResult.Succeeded)
+                        {
+                            return new ResultResponse<UsuarioDto>() { Mensaje = FormatErrors(addRoleResult.Errors)};
+                        }
+                    }
+                    else
+                    {
+                        return new ResultResponse<UsuarioDto>() { Mensaje = FormatErrors(removeRolesResult.Errors)};
+                    }
+                }
+
+
+                return new ResultResponse<UsuarioDto>()
+                {
+                    StatusCode = System.Net.HttpStatusCode.OK,
+                    Mensaje = Mensajes.Editado(_objecto),
+                    Datos =  Usuario(id).Result.Datos
+                };
+              
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                return new ResultResponse<UsuarioDto>() { Mensaje = Mensajes.Error("actualizar",_objecto,ex.Message) };
+            }
+        }
+
+        string FormatErrors(IEnumerable<IdentityError> errors)
+        {
+            return string.Join(" ", errors.Select(error => $" {error.Description}"));
+        }
+
+    
     }
 }

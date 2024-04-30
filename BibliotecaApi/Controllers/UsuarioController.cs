@@ -37,9 +37,18 @@ namespace BibliotecaApi.Controllers
         // POST: api/version/Usuario
         [MapToApiVersion(1)]
         [HttpPost()]
-        public async Task<IActionResult> CrearPrestamo([FromBody] UsuarioModel model)
+        public async Task<IActionResult> CrearUsuario([FromBody] UsuarioModel model)
         {
             var result = await _usuarioServices.CrearUsuario(model);
+            return StatusCode((int)result.StatusCode, new { result.Mensaje, result.Datos });
+        }
+
+        // PUT: api/version/Usuario/5
+        [MapToApiVersion(1)]
+        [HttpPut("{id}")]
+        public async Task<IActionResult> ActualizarUsuario(string id,UsuarioModel model)
+        {
+            var result = await _usuarioServices.ActualizarUsuario(id,model);
             return StatusCode((int)result.StatusCode, new { result.Mensaje, result.Datos });
         }
         
