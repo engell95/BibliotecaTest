@@ -25,7 +25,7 @@ namespace BibliotecaApi.Services
         public async Task<ResultResponse<List<PrestamoDto>>> Prestamos(){
             try
             {
-
+                   
                 var result = await _context.Prestamos.Where(x => x.Estado) 
                 .Include(x => x.Usuario) 
                 .Select(x => 
@@ -96,6 +96,11 @@ namespace BibliotecaApi.Services
         {
             try
             {
+                // Validar si el libro existe
+                var libro = await BuscarLibroAsync(prestamo.Id_Libro);
+                if(!ValidarPrestamo(libro,prestamo.Id_Usuario,out ResultResponse<PrestamoDto> response))
+                    return response;
+             
                 var data = new Prestamo() { 
                     Id_Libro = prestamo.Id_Libro,
                     Id_Usuario = prestamo.Id_Usuario,
@@ -106,8 +111,10 @@ namespace BibliotecaApi.Services
                 };
 
                 _context.Prestamos.Add(data);
-                await GuardarCambiosAsync();
 
+                //Actualizamos existencia de copias
+                libro.Copias = libro.Copias - 1;
+                await GuardarCambiosAsync();
                 return new ResultResponse<PrestamoDto>()
                 {
                     StatusCode = System.Net.HttpStatusCode.Created,
@@ -121,6 +128,48 @@ namespace BibliotecaApi.Services
                 _logger.LogError(ex, ex.Message);
                 return new ResultResponse<PrestamoDto>() { Mensaje = Mensajes.Error("crear",_objecto,ex.Message)};
             }
+        }
+
+        private bool ValidarPrestamo(Libro? model,string Id_Usuario,out ResultResponse<PrestamoDto> response)
+        {
+            response = new ResultResponse<PrestamoDto>();
+
+            // Validar si existe un libro
+            if (model == null )
+            {
+                response = new ResultResponse<PrestamoDto>()
+                {
+                    Mensaje = "El libro especificado no existe."
+                };
+                return false;
+            }
+
+            // Validar si hay copias disponibles del libro
+            if (model.Copias == 0)
+            {
+                response = new ResultResponse<PrestamoDto>()
+                {
+                    Mensaje = "No hay copias disponibles de este libro."
+                };
+                return false;
+            }
+            
+            // Validar prestar el mismo libro
+            if (_context.Prestamos.Any(x => x.Id_Usuario == Id_Usuario && x.Fecha_Devolucion_Real == null && x.Estado))
+            {
+                response = new ResultResponse<PrestamoDto>()
+                {
+                    Mensaje = "El libro esta pendiente de devolución por el usuario."
+                };
+                return false;
+            }
+
+            return true;
+        }
+
+        private async Task<Libro> BuscarLibroAsync(int id)
+        {
+            return await _context.Libros.FindAsync(id);
         }
 
         private async Task GuardarCambiosAsync()

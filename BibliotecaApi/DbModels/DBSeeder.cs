@@ -75,9 +75,9 @@ public class DBSeeder
 			.HashPassword(user1,"seguro@123");
 
 			user2.PasswordHash = new PasswordHasher<IdentityUser>()
-			.HashPassword(user1,"seguro@123");
+			.HashPassword(user2,"seguro@123");
 
-			var users = new List<IdentityUser<string>>{userAdmin,user1};
+			var users = new List<IdentityUser<string>>{userAdmin,user1,user2};
 
 			context.AddRange(users);
 		}
@@ -165,12 +165,13 @@ public class DBSeeder
 			    new Prestamo{Id_Libro = 1 ,Id_Usuario = guids[2] ,Fecha_Prestamo = DateTime.Now,Fecha_Devolucion_Esperada = DateTime.Now.AddDays(10)},
 				new Prestamo{Id_Libro = 2 ,Id_Usuario = guids[2] ,Fecha_Prestamo = DateTime.Now,Fecha_Devolucion_Esperada = DateTime.Now.AddDays(10)},
 				new Prestamo{Id_Libro = 2 ,Id_Usuario = guids[3] ,Fecha_Prestamo = DateTime.Now,Fecha_Devolucion_Esperada = DateTime.Now.AddDays(30)},
-				new Prestamo{Id_Libro = 4 ,Id_Usuario = guids[3] ,Fecha_Prestamo = DateTime.Now,Fecha_Devolucion_Esperada = DateTime.Now.AddDays(15)},
+				new Prestamo{Id_Libro = 1 ,Id_Usuario = guids[3] ,Fecha_Prestamo = DateTime.Now,Fecha_Devolucion_Esperada = DateTime.Now.AddDays(15)},
+				new Prestamo{Id_Libro = 4 ,Id_Usuario = guids[2] ,Fecha_Prestamo = DateTime.Now,Fecha_Devolucion_Esperada = DateTime.Now.AddDays(15)},
+				new Prestamo{Id_Libro = 3 ,Id_Usuario = guids[3] ,Fecha_Prestamo = DateTime.Now,Fecha_Devolucion_Esperada = DateTime.Now.AddDays(15)},
 			};
             
 			context.AddRange(Prestamos);
 		}
-	
 
 		context.SaveChanges();
 	}
