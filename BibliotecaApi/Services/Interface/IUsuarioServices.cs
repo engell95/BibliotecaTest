@@ -8,5 +8,6 @@ namespace BibliotecaApi.Services.Interface
     {
         Task<ResultResponse<List<UsuarioDto>>> Usuarios();
         Task<ResultResponse<UsuarioDto>> Usuario(string id);
+        Task<ResultResponse<UsuarioDto>> CrearUsuario(UsuarioModel model);
     }
 }

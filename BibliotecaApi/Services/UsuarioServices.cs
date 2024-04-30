@@ -16,6 +16,7 @@ namespace BibliotecaApi.Services
         private readonly BibliotecaDbContext _context;
         private readonly string _objecto = "Usuario";
         private readonly UserManager<IdentityUser> userManager;
+        private readonly string _defaultPassword = "seguro@123";
 
         public UsuarioServices(ILogger<UsuarioServices> logger,BibliotecaDbContext dbContext,UserManager<IdentityUser> userManager)
         {
@@ -92,5 +93,43 @@ namespace BibliotecaApi.Services
             }
         }
 
+        public async Task<ResultResponse<UsuarioDto>> CrearUsuario(UsuarioModel model){
+            try
+            {
+               
+                ResultResponse<UsuarioDto> result = new ResultResponse<UsuarioDto>();
+                var identityUser = new IdentityUser
+                {
+                    NormalizedUserName =  model.NormalizedUserName,
+                    UserName = model.Username,
+                    Email = model.Email,
+                    NormalizedEmail = model.Email.ToUpper(),
+                    LockoutEnabled = false,
+                };
+
+                var identityResult = await userManager.CreateAsync(identityUser, _defaultPassword);
+
+                if (identityResult.Succeeded)
+                {
+                    var roleIdentityResult = await userManager.AddToRolesAsync(identityUser, new List<string>{model.Id_Rol});
+                    if (roleIdentityResult.Succeeded){result = await Usuario(identityUser.Id);}
+                    if (result.StatusCode == System.Net.HttpStatusCode.OK){result.Mensaje = $"Usuario {identityUser.UserName} creado. Contraseña establecida {_defaultPassword}.";}
+                }
+                else{
+                    result.StatusCode = System.Net.HttpStatusCode.BadRequest;
+                    foreach (var error in identityResult.Errors)
+                    {
+                        result.Mensaje += $" {error.Description}";
+                    }
+                }
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                return new ResultResponse<UsuarioDto>() { Mensaje = Mensajes.Error("crear",_objecto,ex.Message)};
+            }
+        }
     }
 }

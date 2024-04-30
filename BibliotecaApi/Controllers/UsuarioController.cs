@@ -33,6 +33,15 @@ namespace BibliotecaApi.Controllers
             var result = await _usuarioServices.Usuario(id);
             return StatusCode((int)result.StatusCode, new { result.Mensaje, result.Datos });
         }
+
+        // POST: api/version/Usuario
+        [MapToApiVersion(1)]
+        [HttpPost()]
+        public async Task<IActionResult> CrearPrestamo([FromBody] UsuarioModel model)
+        {
+            var result = await _usuarioServices.CrearUsuario(model);
+            return StatusCode((int)result.StatusCode, new { result.Mensaje, result.Datos });
+        }
         
     }
 }
