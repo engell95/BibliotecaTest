@@ -1,19 +1,29 @@
-import React, { useState } from "react";
-import { Alert, Button, Form, Input, Row, Spin,Card, Typography, Select } from "antd";
+import { useState } from "react";
+import { Alert, Button, Form, Input, Row, Spin,Card, Typography } from "antd";
 import logo from "../../../assets/img/logo.png";
-
-const { Option } = Select;
+import { AccountService } from "../../../services/index";
+import { useDispatch } from 'react-redux'
+import { useNavigate } from "react-router";
+import { InitSession} from '../../../actions/index';
 
 const Login = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [alertMessage, setAlertMessage] = useState<IModelAlert | undefined>(undefined);
 
-
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const onLogin = async (data: IModelLogin) => {
         setIsLoading(true);
-        
-      
+        const result = await AccountService.Authenticate(data);
+        setIsLoading(false);
+        if(result.authenticate)
+        {
+            dispatch(InitSession(result));
+            navigate("/home");
+        }else{
+            setAlertMessage({ message: result.message as string, type: "error" });
+        }
     }
 
     return (
