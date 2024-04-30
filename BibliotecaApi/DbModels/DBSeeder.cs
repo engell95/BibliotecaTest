@@ -21,14 +21,14 @@ public class DBSeeder
 				new IdentityRole
 				{
 					Name = "Administrador",
-					NormalizedName = "Administrador",
+					NormalizedName = "Administrador".ToUpper(),
 					Id = guids[4],
 					ConcurrencyStamp = guids[4]
 				},
 				new IdentityRole
 				{
 					Name = "Estudiante",
-					NormalizedName = "Estudiante",
+					NormalizedName = "Estudiante".ToUpper(),
 					Id = guids[5],
 					ConcurrencyStamp = guids[5]
 				}
@@ -69,7 +69,7 @@ public class DBSeeder
 			};
 
 			userAdmin.PasswordHash = new PasswordHasher<IdentityUser>()
-			.HashPassword(userAdmin,"seguro@123");
+			.HashPassword(userAdmin,"Superadmin@123");
 
 			user1.PasswordHash = new PasswordHasher<IdentityUser>()
 			.HashPassword(user1,"seguro@123");
@@ -88,13 +88,13 @@ public class DBSeeder
 			{
 				new IdentityUserRole<string>
 				{
-					RoleId = guids[4],
-					UserId = guids[1]
+					RoleId = guids[5],
+					UserId = guids[2]
 				},
 				new IdentityUserRole<string>
 				{
-					RoleId = guids[5],
-					UserId = guids[2]
+					RoleId = guids[4],
+					UserId = guids[1]
 				},
 				new IdentityUserRole<string>
 				{

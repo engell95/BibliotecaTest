@@ -1,5 +1,4 @@
 using BibliotecaApi.Dtos;
-using BibliotecaApi.DbModels;
 using BibliotecaApi.Models;
 
 namespace BibliotecaApi.Services.Interface
