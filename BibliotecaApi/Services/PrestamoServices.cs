@@ -105,7 +105,7 @@ namespace BibliotecaApi.Services
                     Id_Libro = prestamo.Id_Libro,
                     Id_Usuario = prestamo.Id_Usuario,
                     Fecha_Prestamo = DateTime.Now,
-                    Fecha_Devolucion_Esperada = prestamo.Fecha_Devolucion_Esperada,
+                    Fecha_Devolucion_Esperada = prestamo.Fecha_Devolucion,
                     Fecha_Devolucion_Real = null,
                     Estado = true
                 };
@@ -127,6 +127,89 @@ namespace BibliotecaApi.Services
             {
                 _logger.LogError(ex, ex.Message);
                 return new ResultResponse<PrestamoDto>() { Mensaje = Mensajes.Error("crear",_objecto,ex.Message)};
+            }
+        }
+
+        public async Task<ResultResponse<PrestamoDto>> ActualizarPrestamo(int id,PrestamoModel prestamo)
+        {
+            try
+            {
+                
+                var data = await BuscarPrestamoAsync(id);
+                if(data == null)
+                {
+                    return new ResultResponse<PrestamoDto>() { Mensaje =  Mensajes.NoExiste(_objecto)};
+                }
+
+                data.Id_Libro = prestamo.Id_Libro;
+                data.Id_Usuario = prestamo.Id_Usuario;
+                data.Fecha_Devolucion_Esperada = prestamo.Fecha_Devolucion;
+                await GuardarCambiosAsync();
+                return new ResultResponse<PrestamoDto>()
+                {
+                    StatusCode = System.Net.HttpStatusCode.OK,
+                    Mensaje = Mensajes.Editado(_objecto),
+                    Datos = Prestamo(data.Id).Result.Datos
+                };
+              
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                return new ResultResponse<PrestamoDto>() { Mensaje = Mensajes.Error("actualizar",_objecto,ex.Message) };
+            }
+        }
+
+        public async Task<BaseResult> EliminarPrestamo(int id)
+        {
+            try
+            {
+                var data = await BuscarPrestamoAsync(id);
+                if (data == null)
+                {
+                    return new BaseResult() { Mensaje =  Mensajes.NoExiste(_objecto)};
+                }
+
+                data.Estado = false;
+                await GuardarCambiosAsync();
+                return new BaseResult()
+                {
+                    StatusCode = System.Net.HttpStatusCode.OK,
+                    Mensaje = Mensajes.Eliminado(_objecto)
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                return new BaseResult() { Mensaje = Mensajes.Error("eliminar",_objecto,ex.Message) };
+            }
+        }
+
+        public async Task<BaseResult> DevolverPrestamo(int id)
+        {
+            try
+            {
+                
+                var data = await BuscarPrestamoAsync(id);
+                if(data == null)
+                {
+                    return new BaseResult() { Mensaje =  Mensajes.NoExiste(_objecto)};
+                }
+
+                data.Fecha_Devolucion_Real = DateTime.Now;
+
+                //Actualizamos existencia de copias
+                var libro = await BuscarLibroAsync(data.Id_Libro);
+                libro.Copias = libro.Copias + 1;
+
+                await GuardarCambiosAsync();
+                return new BaseResult() { Mensaje = "Libro devuelto."};
+              
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                return new BaseResult() { Mensaje = Mensajes.Error("devolver",_objecto,ex.Message) };
             }
         }
 
@@ -155,7 +238,7 @@ namespace BibliotecaApi.Services
             }
             
             // Validar prestar el mismo libro
-            if (_context.Prestamos.Any(x => x.Id_Usuario == Id_Usuario && x.Fecha_Devolucion_Real == null && x.Estado))
+            if (_context.Prestamos.Any(x => x.Id_Usuario == Id_Usuario && x.Id_Libro == model.Id && x.Fecha_Devolucion_Real == null && x.Estado))
             {
                 response = new ResultResponse<PrestamoDto>()
                 {
@@ -170,6 +253,11 @@ namespace BibliotecaApi.Services
         private async Task<Libro> BuscarLibroAsync(int id)
         {
             return await _context.Libros.FindAsync(id);
+        }
+
+        private async Task<Prestamo> BuscarPrestamoAsync(int id)
+        {
+            return await _context.Prestamos.FindAsync(id);
         }
 
         private async Task GuardarCambiosAsync()

@@ -43,6 +43,33 @@ namespace BibliotecaApi.Controllers
             return StatusCode((int)result.StatusCode, new { result.Mensaje, result.Datos });
         }
 
+        // PUT: api/version/Prestamo/5
+        [MapToApiVersion(1)]
+        [HttpPut("{id}")]
+        public async Task<IActionResult> ActualizarPrestamo(int id,PrestamoModel model)
+        {
+            var result = await _prestamoServices.ActualizarPrestamo(id,model);
+            return StatusCode((int)result.StatusCode, new { result.Mensaje, result.Datos });
+        }
+
+        // DELETE: api/version/Prestamo/5
+        [MapToApiVersion(1)]
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> EliminarPrestamo(int id)
+        {
+            var result = await _prestamoServices.EliminarPrestamo(id);
+            return StatusCode((int)result.StatusCode, new { result.Mensaje });
+        }
+
+        // PUT: api/version/Prestamo/5/Devolucion
+        [MapToApiVersion(1)]
+        [HttpPut("{id}/Devolucion")]
+        public async Task<IActionResult> DevolverPrestamo(int id)
+        {
+            var result = await _prestamoServices.DevolverPrestamo(id);
+            return StatusCode((int)result.StatusCode, new { result.Mensaje });
+        }
+
 
     }
 }

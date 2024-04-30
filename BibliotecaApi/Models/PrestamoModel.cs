@@ -16,9 +16,7 @@ namespace BibliotecaApi.Models
         public string Id_Usuario { get; set; }
 
         [Required(ErrorMessage = "El campo {0} es requerido")]
-        [FechaMayorQueHoy(ErrorMessage = "La fecha de Devolucion debe ser mayor que hoy")]
         [DisplayName("Fecha Devolucion")]
-        public DateTime Fecha_Devolucion_Esperada { get; set; }
-
+        public DateTime Fecha_Devolucion { get; set; }
     }
 }
