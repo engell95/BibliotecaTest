@@ -72,10 +72,10 @@ public class DBSeeder
 			.HashPassword(userAdmin,"Superadmin@123");
 
 			user1.PasswordHash = new PasswordHasher<IdentityUser>()
-			.HashPassword(user1,"seguro@123");
+			.HashPassword(user1,"Seguro@123");
 
 			user2.PasswordHash = new PasswordHasher<IdentityUser>()
-			.HashPassword(user2,"seguro@123");
+			.HashPassword(user2,"Seguro@123");
 
 			var users = new List<IdentityUser<string>>{userAdmin,user1,user2};
 

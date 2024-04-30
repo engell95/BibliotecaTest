@@ -3,12 +3,15 @@ using BibliotecaApi.Models;
 using BibliotecaApi.Services.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Asp.Versioning;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace BibliotecaApi.Controllers
 {
     [ApiVersion(1)]
     [Route("api/v{v:apiVersion}/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,Roles = "Administrador")]
     public class UsuarioController : Controller
     {
         private readonly IUsuarioServices _usuarioServices;
