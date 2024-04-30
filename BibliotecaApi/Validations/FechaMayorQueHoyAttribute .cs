@@ -10,7 +10,7 @@ namespace BibliotecaApi.Validations
         {
             var fecha = (DateTime)value;
 
-            if (fecha <= DateTime.Today)
+            if (fecha.Date <= DateTime.Today.Date)
             {
                 return new ValidationResult(ErrorMessage);
             }
