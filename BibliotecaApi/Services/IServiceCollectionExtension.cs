@@ -12,6 +12,7 @@ namespace BibliotecaApi.Services
             services.AddTransient<ILibroServices, LibroServices>();
             services.AddTransient<IPrestamoServices, PrestamoServices>();
             services.AddTransient<IUsuarioServices, UsuarioServices>();
+            services.AddTransient<IRolServices, RolServices>();
             return services;
         }
     }
