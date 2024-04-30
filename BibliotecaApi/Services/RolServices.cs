@@ -13,13 +13,11 @@ namespace BibliotecaApi.Services
         private readonly ILogger _logger;
         private readonly BibliotecaDbContext _context;
         private readonly string _objecto = "Rol";
-        private readonly UserManager<IdentityUser> userManager;
 
-        public RolServices(ILogger<RolServices> logger,BibliotecaDbContext dbContext,UserManager<IdentityUser> userManager)
+        public RolServices(ILogger<RolServices> logger,BibliotecaDbContext dbContext)
         {
             _logger = logger;
             _context = dbContext;
-            this.userManager = userManager;
         }
 
          public async Task<ResultResponse<List<IdentityRole>>> Roles(){

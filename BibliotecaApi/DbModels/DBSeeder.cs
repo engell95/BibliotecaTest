@@ -21,14 +21,14 @@ public class DBSeeder
 				new IdentityRole
 				{
 					Name = "Administrador",
-					NormalizedName = "Administrador",
+					NormalizedName = "Administrador".ToUpper(),
 					Id = guids[4],
 					ConcurrencyStamp = guids[4]
 				},
 				new IdentityRole
 				{
 					Name = "Estudiante",
-					NormalizedName = "Estudiante",
+					NormalizedName = "Estudiante".ToUpper(),
 					Id = guids[5],
 					ConcurrencyStamp = guids[5]
 				}
