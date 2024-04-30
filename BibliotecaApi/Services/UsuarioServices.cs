@@ -61,7 +61,36 @@ namespace BibliotecaApi.Services
             }
         }
 
+        public async Task<ResultResponse<UsuarioDto>> Usuario(string id){
+            try
+            {
+                var usersData = _context.Users.Find(id);
 
+                if(usersData == null)
+                     return new ResultResponse<UsuarioDto>() { Mensaje = Mensajes.NoExiste(_objecto)};
+
+                var roles = await userManager.GetRolesAsync(usersData);
+                var userDto = new UsuarioDto
+                {
+                    Id = usersData.Id,
+                    UserName = usersData.UserName,
+                    Email = usersData.Email,
+                    Roles = roles.ToList()
+                };
+
+                return new ResultResponse<UsuarioDto>()
+                {
+                    StatusCode = System.Net.HttpStatusCode.OK,
+                    Mensaje = Mensajes.Generado(_objecto),
+                    Datos = userDto
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                return new ResultResponse<UsuarioDto>(){ Mensaje = Mensajes.ErrorGenerado(ex.Message)};
+            }
+        }
 
     }
 }

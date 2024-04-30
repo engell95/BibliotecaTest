@@ -25,5 +25,14 @@ namespace BibliotecaApi.Controllers
             return StatusCode((int)result.StatusCode, new { result.Mensaje, result.Datos });
         }
         
+        // GET: api/version/Usuario/5
+        [MapToApiVersion(1)]
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Usuario(string id)
+        {
+            var result = await _usuarioServices.Usuario(id);
+            return StatusCode((int)result.StatusCode, new { result.Mensaje, result.Datos });
+        }
+        
     }
 }
