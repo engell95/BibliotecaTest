@@ -142,6 +142,7 @@ namespace BibliotecaApi.Services
                 data.Fecha_Publicacion = libro.Fecha_Publicacion;
                 data.Id_Autor = libro.Id_Autor;
                 data.Id_Editorial = libro.Id_Editorial;
+                data.Copias = libro.Copias;
                 await GuardarCambiosAsync();
                 return new ResultResponse<LibroDto>()
                 {

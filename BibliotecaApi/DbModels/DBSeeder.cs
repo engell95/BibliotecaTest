@@ -6,6 +6,12 @@ public class DBSeeder
 {
     public static void Seed(BibliotecaDbContext context)
 	{
+		var guids = new List<string>();
+		for (int i = 0; i < 6; i++)
+		{
+			guids.Add(Guid.NewGuid().ToString());
+		}
+
 		//Roles
 		if (!context.Roles.Any())
 		{
@@ -14,17 +20,17 @@ public class DBSeeder
 			{
 				new IdentityRole
 				{
-					Name = "Admin",
-					NormalizedName = "Admin",
-					Id = "af7b9479-0880-4114-9104-45b1358e4f1b",
-					ConcurrencyStamp = "af7b9479-0880-4114-9104-45b1358e4f1b"
+					Name = "Administrador",
+					NormalizedName = "Administrador",
+					Id = guids[4],
+					ConcurrencyStamp = guids[4]
 				},
 				new IdentityRole
 				{
 					Name = "Estudiante",
 					NormalizedName = "Estudiante",
-					Id = "5b77cf84-4032-4409-9178-e76e16ef0f3c",
-					ConcurrencyStamp = "5b77cf84-4032-4409-9178-e76e16ef0f3c"
+					Id = guids[5],
+					ConcurrencyStamp = guids[5]
 				}
 			};
 
@@ -33,33 +39,45 @@ public class DBSeeder
 
 		//Usuarios
 		if (!context.Users.Any())
-		{
+		{	
 
 			var userAdmin = new IdentityUser
 			{
-				UserName = "Admin",
+				UserName = "Administrador",
 				Email = "Admin@test.com",
 				NormalizedEmail = "Admin@test.com".ToUpper(),
 				NormalizedUserName = "Admin".ToUpper(),
-				Id =  "cf87c98d-5de5-49ec-ac3a-a7102f3851cf"
+				Id =  guids[1]
 			};
 
-			var user = new IdentityUser
+			var user1 = new IdentityUser
 			{
-				UserName = "User",
-				Email = "User@test.com",
-				NormalizedEmail = "User@test.com".ToUpper(),
-				NormalizedUserName = "User".ToUpper(),
-				Id = "1cb01fc4-6997-4918-8f3d-6b7c330bb7af"
+				UserName = "Usuario1",
+				Email = "User1@test.com",
+				NormalizedEmail = "User1@test.com".ToUpper(),
+				NormalizedUserName = "Usuario1".ToUpper(),
+				Id = guids[2]
+			};
+
+			var user2 = new IdentityUser
+			{
+				UserName = "Usuario2",
+				Email = "User2@test.com",
+				NormalizedEmail = "User2@test.com".ToUpper(),
+				NormalizedUserName = "Usuario2".ToUpper(),
+				Id = guids[3]
 			};
 
 			userAdmin.PasswordHash = new PasswordHasher<IdentityUser>()
 			.HashPassword(userAdmin,"seguro@123");
 
-			user.PasswordHash = new PasswordHasher<IdentityUser>()
-			.HashPassword(user,"seguro@123");
+			user1.PasswordHash = new PasswordHasher<IdentityUser>()
+			.HashPassword(user1,"seguro@123");
 
-			var users = new List<IdentityUser<string>>{userAdmin,user};
+			user2.PasswordHash = new PasswordHasher<IdentityUser>()
+			.HashPassword(user2,"seguro@123");
+
+			var users = new List<IdentityUser<string>>{userAdmin,user1,user2};
 
 			context.AddRange(users);
 		}
@@ -70,13 +88,18 @@ public class DBSeeder
 			{
 				new IdentityUserRole<string>
 				{
-					RoleId= "af7b9479-0880-4114-9104-45b1358e4f1b",
-					UserId= "cf87c98d-5de5-49ec-ac3a-a7102f3851cf"
+					RoleId = guids[4],
+					UserId = guids[1]
 				},
 				new IdentityUserRole<string>
 				{
-					RoleId= "5b77cf84-4032-4409-9178-e76e16ef0f3c",
-					UserId= "1cb01fc4-6997-4918-8f3d-6b7c330bb7af"
+					RoleId = guids[5],
+					UserId = guids[2]
+				},
+				new IdentityUserRole<string>
+				{
+					RoleId = guids[5],
+					UserId = guids[3]
 				}
 			};
 			context.AddRange(userRoles);
@@ -133,6 +156,21 @@ public class DBSeeder
 		    };
             
 			context.AddRange(Libros);
+		}
+
+		//Prestamos
+		if (!context.Prestamos.Any())
+		{
+            var Prestamos = new List<Prestamo> {
+			    new Prestamo{Id_Libro = 1 ,Id_Usuario = guids[2] ,Fecha_Prestamo = DateTime.Now,Fecha_Devolucion_Esperada = DateTime.Now.AddDays(10)},
+				new Prestamo{Id_Libro = 2 ,Id_Usuario = guids[2] ,Fecha_Prestamo = DateTime.Now,Fecha_Devolucion_Esperada = DateTime.Now.AddDays(10)},
+				new Prestamo{Id_Libro = 2 ,Id_Usuario = guids[3] ,Fecha_Prestamo = DateTime.Now,Fecha_Devolucion_Esperada = DateTime.Now.AddDays(30)},
+				new Prestamo{Id_Libro = 1 ,Id_Usuario = guids[3] ,Fecha_Prestamo = DateTime.Now,Fecha_Devolucion_Esperada = DateTime.Now.AddDays(15)},
+				new Prestamo{Id_Libro = 4 ,Id_Usuario = guids[2] ,Fecha_Prestamo = DateTime.Now,Fecha_Devolucion_Esperada = DateTime.Now.AddDays(15)},
+				new Prestamo{Id_Libro = 3 ,Id_Usuario = guids[3] ,Fecha_Prestamo = DateTime.Now,Fecha_Devolucion_Esperada = DateTime.Now.AddDays(15)},
+			};
+            
+			context.AddRange(Prestamos);
 		}
 
 		context.SaveChanges();
