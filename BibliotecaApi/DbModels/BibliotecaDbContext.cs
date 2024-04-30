@@ -116,6 +116,10 @@ public partial class BibliotecaDbContext : IdentityDbContext
              entity.HasOne(l => l.Estudiante)
             .WithMany()
             .HasForeignKey(l => l.Id_Estudiante);
+
+            entity.Property(e => e.Estado)
+            .IsRequired()
+            .HasDefaultValue(true);
         });
 
         builder.Entity<AppLog>(entity =>

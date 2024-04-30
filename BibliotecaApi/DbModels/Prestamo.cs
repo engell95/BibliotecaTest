@@ -12,5 +12,6 @@ namespace BibliotecaApi.DbModels
         public DateTime? Fecha_Devolucion_Real { get; set; } // Puede ser nulo si el libro aún no se ha devuelto
         public Libro Libro { get; set; } 
         public Estudiante Estudiante { get; set; } 
+        public bool Estado { get; set; } = true;
     }
 }
