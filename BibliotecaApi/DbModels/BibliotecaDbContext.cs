@@ -11,7 +11,6 @@ public partial class BibliotecaDbContext : IdentityDbContext
 
     public DbSet<Autor> Autores { get; set; }
     public DbSet<Editorial> Editoriales { get; set; }
-    public DbSet<Estudiante> Estudiantes { get; set; }
     public DbSet<Libro> Libros { get; set; }
     public DbSet<Prestamo> Prestamos { get; set; }
     public DbSet<AppLog> AppLogs { get; set; }
@@ -46,29 +45,7 @@ public partial class BibliotecaDbContext : IdentityDbContext
             .IsRequired()
             .HasDefaultValue(true);
         });
-
-        builder.Entity<Estudiante>(entity =>
-        {
-            entity.ToTable("Estudiantes");
-            entity.HasKey(e => e.Id);
-            entity.Property(e => e.Nombre)
-                .HasMaxLength(100)
-                .IsRequired();
-            entity.Property(e => e.Direccion)
-                .HasMaxLength(200)
-                .IsRequired();
-            entity.Property(e => e.Telefono)
-                .HasMaxLength(10)
-                .IsRequired()
-                .HasColumnType("nvarchar(10)");
-            entity.Property(e => e.Correo)
-                .HasMaxLength(100)
-                .IsRequired();
-            entity.Property(e => e.Estado)
-            .IsRequired()
-            .HasDefaultValue(true);
-        });
-    
+       
         builder.Entity<Libro>(entity =>
         {
             entity.ToTable("Libros");
@@ -113,9 +90,9 @@ public partial class BibliotecaDbContext : IdentityDbContext
             .WithMany()
             .HasForeignKey(l => l.Id_Libro);
 
-             entity.HasOne(l => l.Estudiante)
+             entity.HasOne(l => l.Usuario)
             .WithMany()
-            .HasForeignKey(l => l.Id_Estudiante);
+            .HasForeignKey(l => l.Id_Usuario);
 
             entity.Property(e => e.Estado)
             .IsRequired()

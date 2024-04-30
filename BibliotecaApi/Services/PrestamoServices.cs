@@ -27,7 +27,7 @@ namespace BibliotecaApi.Services
             {
 
                 var result = await _context.Prestamos.Where(x => x.Estado) 
-                .Include(x => x.Estudiante) 
+                .Include(x => x.Usuario) 
                 .Select(x => 
                     new PrestamoDto { 
                         Id = x.Id,
@@ -35,8 +35,8 @@ namespace BibliotecaApi.Services
                         Fecha_Devolucion_Esperada = x.Fecha_Devolucion_Esperada,
                         Fecha_Devolucion_Real = x.Fecha_Devolucion_Real,
                         Libro = _libroServices.Libro(x.Id_Libro).Result.Datos,
-                        IdEstudiante = x.Estudiante.Id,
-                        Estudiante = x.Estudiante.Nombre
+                        IdUsuario = x.Usuario.Id,
+                        Usuario = x.Usuario.NormalizedUserName
                     }
                 )
                 .ToListAsync();
