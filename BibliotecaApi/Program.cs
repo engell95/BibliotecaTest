@@ -74,9 +74,10 @@ builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(x =>
     {
-        x.WithOrigins("").AllowAnyMethod().AllowAnyHeader();
-        // in some case would be necesary to add WithExposedHeaders()
-        // for testing it https://www.apirequest.io
+         options.AddPolicy("CorsPolicy",
+            builder => builder.AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader());
     });
 });
 
@@ -114,6 +115,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors("CorsPolicy");
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();

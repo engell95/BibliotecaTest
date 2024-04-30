@@ -47,7 +47,7 @@ namespace BibliotecaApi.Controllers
                 }
             }
 
-            return Unauthorized("Cuenta bloqueada contacte al administrador.");
+            return Unauthorized("Validar credenciales.");
         }
 
         [HttpGet("RefreshToken")]
