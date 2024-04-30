@@ -1,4 +1,4 @@
-import { Button, Col, Layout, Popover, Row, Typography } from "antd";
+import { Button, Col, Popover, Row, Typography,PageHeader } from "antd";
 import { NavLink, useNavigate } from 'react-router-dom';
 import { UserOutlined } from "@ant-design/icons";
 import { useDispatch } from 'react-redux'
@@ -21,9 +21,6 @@ const Header = () => {
     const perfilPopover = (
         <React.Fragment>
             <NavLink to="profile" >
-                <Button className="block" icon={<UserOutlined />}>
-                    Perfil
-            </Button>
             </NavLink>
             <Button type="text" className="block" onClick={logout}>
                 Salir
@@ -31,16 +28,18 @@ const Header = () => {
         </React.Fragment>
     );
 
-
     return (
-        <Layout.Header  className="header" >
+        <PageHeader
+            className="site-page-header"
+            onBack={() => null}
+        >
             <Row justify="end" align="middle" gutter={[10, 10]}>
                 <Col flex={100}></Col>
                 <Col className="hidden-sm">
                     <Text >
                         Bienvenido, {" "}
                         <Text strong>
-                            {sessionData.name}
+                            {sessionData.username}
                         </Text>
                     </Text>
                 </Col>
@@ -49,9 +48,9 @@ const Header = () => {
                         <UserOutlined/>
                     </Popover>
                 </Col>
-
             </Row>
-        </Layout.Header>
+        </PageHeader>
+
     );
 }
 export { Header };

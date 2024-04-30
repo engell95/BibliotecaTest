@@ -1,12 +1,18 @@
-interface IModelLoginRequest {
-    country: string = '';
+interface IModelLogin {
     username: string = '';
-    url: string | null = '';
-    message: string | null = '';
-    authenticate: boolean = false;
-    idrol: int;
-    name: string = '';
-    menues: IModelMenu
+    password: string = '';
+}
+
+interface IModelLoginRequest {
+    token: string = '';
+    expiration: Date = '';
+    authenticate:boolean = false;
+    message: string = '';
+    username : string = '';
+}
+
+interface IModelAuthorized {
+    auth: boolean;
 }
 
 interface IModelReducer {
@@ -20,11 +26,7 @@ interface IModelItemMenu {
     key: string;
 }
 
-interface IModelLogin {
-    country: string = 'NI';
-    username: string = '';
-    password: string = '';
-}
+
 
 interface IModelAlert {
     message: string;

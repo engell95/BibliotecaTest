@@ -20,14 +20,15 @@ body {
     box-shadow: 0px 0px 10px rgba(0,0,0,0.5);
     
   }
+  .ant-layout-sider {
+    background: white !important;
+  }
   
   .layout-main{
     min-height: 100vh;
   }
   
-  .ant-menu-item-selected {
-    color: white !important;
-  }
+  
   
   .ant-table table {
     table-layout: auto !important;
