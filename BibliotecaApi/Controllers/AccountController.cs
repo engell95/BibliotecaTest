@@ -66,14 +66,17 @@ namespace BibliotecaApi.Controllers
         private async Task<AuthenticationResponse> GenerateToken(IdentityUser model) 
         {
             string userName = model.UserName ?? "testUser";
+            string mail = model.Email ?? "testUser";
+            var roles = await userManager.GetRolesAsync(model);
             var claims = new List<Claim>()
             {
-                new Claim(ClaimTypes.Name, userName)
+                new Claim("userName", userName),
+                new Claim("email", mail)
             };
-
-            var claimsDb = await userManager.GetClaimsAsync(model);
-
-            claims.AddRange(claimsDb);
+            foreach (var role in roles)
+            {
+                claims.Add(new Claim("role", role));
+            }
 
             string config = configuration["jwtKey"]?? "";
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config));
