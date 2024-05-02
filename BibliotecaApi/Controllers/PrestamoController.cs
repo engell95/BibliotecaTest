@@ -79,6 +79,15 @@ namespace BibliotecaApi.Controllers
             return StatusCode((int)result.StatusCode, new { result.Mensaje });
         }
 
+        // GET: api/version/Prestamo/5/Usuario
+        [MapToApiVersion(1)]
+        [HttpGet("{id}/Usuario")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,Roles = "Estudiante")]
+        public async Task<IActionResult> PrestamosUsuario(string id)
+        {
+            var result = await _prestamoServices.PrestamosUsuario(id);
+            return StatusCode((int)result.StatusCode, new { result.Mensaje, result.Datos });
+        }
 
     }
 }

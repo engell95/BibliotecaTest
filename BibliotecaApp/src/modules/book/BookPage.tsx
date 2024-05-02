@@ -46,7 +46,6 @@ const BookPage = () => {
     };
 
     const showLoan = (data: IModelBook) => {
-        console.log(Loan)
         Loan.id_Usuario = sessionData.idUser;
         Loan.id_Libro = data.id;
         Loan.autor = data.autor;
