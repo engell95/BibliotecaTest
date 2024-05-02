@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button, Col, Divider, Row,Card, Space, Modal, Input } from "antd";
-import { EditOutlined, LoadingOutlined, ScheduleOutlined ,CloseCircleOutlined,SaveOutlined} from '@ant-design/icons';
+import { EditOutlined, LoadingOutlined, ScheduleOutlined ,CloseCircleOutlined,SaveOutlined,ClearOutlined} from '@ant-design/icons';
 import { BookService } from '../../services';
 import { BookModal } from "./components";
 import { LoanModal } from "../loan/components";
@@ -46,7 +46,6 @@ const BookPage = () => {
     };
 
     const showLoan = (data: IModelBook) => {
-        console.log(Loan)
         Loan.id_Usuario = sessionData.idUser;
         Loan.id_Libro = data.id;
         Loan.autor = data.autor;
@@ -159,15 +158,15 @@ const BookPage = () => {
                             style={{ marginBottom: 16 }}
                             cover={<img alt={book.nombre} src={`https://picsum.photos/150/150?random=${book.id}`} />}
                             actions={[
-                                <>  {IsAdmin(sessionData.role)?
-                                    <Space onClick={(e) => e.stopPropagation()} style={{ marginBottom: '1em' }}>
+                                <>{IsAdmin(sessionData.role)?
+                                    <Space  onClick={(e) => e.stopPropagation()} style={{marginBottom:"0.5em"}}>
                                         <Button type="primary" icon={<EditOutlined />} onClick={() => editBook(book)}>Editar</Button>
-                                        <Button type="default" icon={<EditOutlined />} onClick={() => deleteB(book.id)}>Eliminar</Button>
+                                        <Button type="default" icon={<ClearOutlined />} onClick={() => deleteB(book.id)}>Eliminar</Button><br/>
                                     </Space>
                                     :<></>}
-                                    <Space onClick={(e) => e.stopPropagation()}>
-                                        <Button type="primary" icon={<ScheduleOutlined />} onClick={() => showLoan(book)}>Prestar</Button>
-                                    </Space>
+                                <Space  onClick={(e) => e.stopPropagation()}>
+                                    <Button type="primary" icon={<ScheduleOutlined />} onClick={() => showLoan(book)}>Prestar</Button>
+                                </Space>
                                 </>
                             ]}
                             onClick={() => showBook(book)}

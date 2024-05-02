@@ -11,5 +11,6 @@ namespace BibliotecaApi.Services.Interface
         Task<ResultResponse<PrestamoDto>> ActualizarPrestamo(int id,PrestamoModel prestamo);
         Task<BaseResult> EliminarPrestamo(int id);
         Task<BaseResult> DevolverPrestamo(int id);
+        Task<ResultResponse<List<PrestamoDto>>> PrestamosUsuario(string id);
     }
 }

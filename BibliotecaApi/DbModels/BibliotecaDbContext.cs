@@ -88,11 +88,13 @@ public partial class BibliotecaDbContext : IdentityDbContext
 
             entity.HasOne(l => l.Libro)
             .WithMany()
-            .HasForeignKey(l => l.Id_Libro);
+            .HasForeignKey(l => l.Id_Libro)
+            .IsRequired();
 
              entity.HasOne(l => l.Usuario)
             .WithMany()
-            .HasForeignKey(l => l.Id_Usuario);
+            .HasForeignKey(l => l.Id_Usuario)
+            .IsRequired();
 
             entity.Property(e => e.Estado)
             .IsRequired()
