@@ -39,7 +39,7 @@ const Header = () => {
                     <Text >
                         Bienvenido, {" "}
                         <Text strong>
-                            {sessionData.username}
+                            {sessionData.userName}
                         </Text>
                     </Text>
                 </Col>

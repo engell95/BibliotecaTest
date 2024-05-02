@@ -24,8 +24,8 @@ function getItem(
 const items: MenuProps['items'] = [
 
   getItem('Inicio', '/home', <HomeOutlined />),
-  getItem('Libros', 'sub1', <ReadOutlined  />, [
-    getItem('Libros', 'sub2', <ReadOutlined  />),
+  getItem('Libros', '', <ReadOutlined  />, [
+    getItem('Libros', 'book', <ReadOutlined  />),
     getItem('Prestamos', 'sub3', <ScheduleOutlined />),
   ]),
   getItem('Autores', 'sub4', <UserOutlined />),
