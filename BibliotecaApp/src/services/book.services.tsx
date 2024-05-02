@@ -45,6 +45,18 @@ class BookService {
         return data;
     }
 
+    static DeleteBook = async (id :number) => {
+        
+        const sessionData = SessionData() as IModelLoginRequest;
+        const { data } = await axios.delete(`${API_BASE_URL}v1/Libro/${id}`,{
+            headers: {
+                Authorization: `Bearer ${sessionData.token}`
+            }
+        });
+
+        return data;
+    }
+
 }
 
 export { BookService };

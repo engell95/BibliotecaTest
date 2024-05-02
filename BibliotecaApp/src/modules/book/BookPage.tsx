@@ -107,6 +107,36 @@ const BookPage = () => {
 
     }
 
+    const deleteB = (id: number) => {
+        const modal = Modal.success({
+            icon: <LoadingOutlined />,
+            title: "Eliminando...",
+            centered: true,
+            content: "Se esta eliminando el libro",
+            okButtonProps:{ disabled: true }
+        });
+
+        BookService.DeleteBook(id).then(() => {
+            modal.update({
+                icon: <SaveOutlined />,
+                title: "Eliminado",
+                content: "🚀 ~ Libro Eliminado!!",
+                okButtonProps:{ disabled: false }
+            });
+            fetchListBook();
+        }).catch((error:any) => {
+            
+            modal.update({
+                icon: <CloseCircleOutlined />,
+                type: "error",
+                title: "Error",
+                content: handleApiResponse(error.response),
+                okButtonProps:{ disabled: false }
+            });
+        });
+
+    }
+
     return (
         <React.Fragment>
             <Row gutter={[16, 16]} justify="end" align="middle">
@@ -129,12 +159,16 @@ const BookPage = () => {
                             style={{ marginBottom: 16 }}
                             cover={<img alt={book.nombre} src={`https://picsum.photos/150/150?random=${book.id}`} />}
                             actions={[
-                                <Space onClick={(e) => e.stopPropagation()}>
-                                    {IsAdmin?
-                                    <Button type="primary" icon={<EditOutlined />} onClick={() => editBook(book)}>Editar</Button>
+                                <>  {IsAdmin?
+                                    <Space onClick={(e) => e.stopPropagation()} style={{ marginBottom: '1em' }}>
+                                        <Button type="primary" icon={<EditOutlined />} onClick={() => editBook(book)}>Editar</Button>
+                                        <Button type="default" icon={<EditOutlined />} onClick={() => deleteB(book.id)}>Eliminar</Button>
+                                    </Space>
                                     :<></>}
-                                    <Button type="primary" icon={<ScheduleOutlined />} onClick={() => showLoan(book)}>Prestar</Button>
-                                </Space>
+                                    <Space onClick={(e) => e.stopPropagation()}>
+                                        <Button type="primary" icon={<ScheduleOutlined />} onClick={() => showLoan(book)}>Prestar</Button>
+                                    </Space>
+                                </>
                             ]}
                             onClick={() => showBook(book)}
                         >
