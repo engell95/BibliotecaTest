@@ -34,9 +34,9 @@ interface IModelBook {
     descripcion: string;
     copias: number;
     fecha_Publicacion: string; 
-    idAutor: number;
+    id_Autor: number;
     autor: string;
-    idEditorial: number;
+    id_Editorial: number;
     editorial: string;
 }
 
@@ -47,6 +47,16 @@ interface PropBook {
     Type: number;
     onSave: (form: any) => void;
     onLoad: (data: IModelBook) => void;
+}
+
+interface IModelBookRequest {
+    id:number;
+    id_Autor: number;
+    id_Editorial: number;
+    nombre: string;
+    descripcion: string;
+    copias: number;
+    fecha_Publicacion: string; 
 }
 
 interface IModelAuthor {

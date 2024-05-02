@@ -8,7 +8,6 @@ import locale from "antd/lib/date-picker/locale/es_ES";
 const LoanModal = ({ showModal, formData, onChange, Type }: PropLoan) => {
     const layout = { labelCol: { span: 8 }, wrapperCol: { span: 16 } };
     const [selectedDate, setSelectedDate] = useState("");
-    
 
     const handleDateChange = (date: moment.Moment | null) => {
         if (date) {

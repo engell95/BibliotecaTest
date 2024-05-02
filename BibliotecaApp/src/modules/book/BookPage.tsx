@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Button, Col, Divider, Row,Card, Space, Modal, Input } from "antd";
-import { EditOutlined, LoadingOutlined, ScheduleOutlined } from '@ant-design/icons';
+import { EditOutlined, LoadingOutlined, ScheduleOutlined ,CloseCircleOutlined,SaveOutlined} from '@ant-design/icons';
 import { BookService } from '../../services';
 import { BookModal } from "./components";
 import { LoanModal } from "../loan/components";
-import { IsAdmin,SessionData } from '../../helpers';
+import { IsAdmin,SessionData,handleApiResponse } from '../../helpers';
 const Search = Input.Search;
 
 const BookPage = () => {
@@ -83,7 +83,28 @@ const BookPage = () => {
             okButtonProps:{ disabled: true }
         });
 
-        
+        var result = Type == 2? BookService.NewBook(form) : BookService.EditBook(form);
+
+        result.then(() => {
+            modal.update({
+                icon: <SaveOutlined />,
+                title: "Guardado",
+                content: "🚀 ~ Libro Creado!!",
+                onOk: changeModal,
+                okButtonProps:{ disabled: false }
+            });
+            fetchListBook();
+        }).catch((error:any) => {
+            
+            modal.update({
+                icon: <CloseCircleOutlined />,
+                type: "error",
+                title: "Error",
+                content: handleApiResponse(error.response),
+                okButtonProps:{ disabled: false }
+            });
+        });
+
     }
 
     return (

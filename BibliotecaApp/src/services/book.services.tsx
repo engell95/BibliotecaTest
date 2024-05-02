@@ -21,6 +21,30 @@ class BookService {
         return response;
     }
 
+    static NewBook = async (model: IModelBookRequest) => {
+        
+        const sessionData = SessionData() as IModelLoginRequest;
+        const { data } = await axios.post(`${API_BASE_URL}v1/Libro`, model,{
+            headers: {
+                Authorization: `Bearer ${sessionData.token}`
+            }
+        });
+
+        return data;
+    }
+
+    static EditBook = async (model: IModelBookRequest) => {
+        
+        const sessionData = SessionData() as IModelLoginRequest;
+        const { data } = await axios.put(`${API_BASE_URL}v1/Libro/${model.id}`, model,{
+            headers: {
+                Authorization: `Bearer ${sessionData.token}`
+            }
+        });
+
+        return data;
+    }
+
 }
 
 export { BookService };
