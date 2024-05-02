@@ -28,9 +28,9 @@ const items: MenuProps['items'] = [
     getItem('Libros', 'book', <ReadOutlined  />),
     getItem('Prestamos', 'loan', <ScheduleOutlined />),
   ]),
-  getItem('Autores', 'sub4', <UserOutlined />),
-  getItem('Editoriales', 'sub17', <ContainerOutlined />),
-  getItem('Usuarios', 'sub15', <ControlOutlined  />),
+  getItem('Autores', 'author', <UserOutlined />),
+  getItem('Editoriales', 'publisher', <ContainerOutlined />),
+  getItem('Usuarios', 'user', <ControlOutlined  />),
 
 ];
 
