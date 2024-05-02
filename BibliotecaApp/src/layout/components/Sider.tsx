@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { HomeOutlined, ControlOutlined , ContainerOutlined, UserOutlined, ScheduleOutlined , ReadOutlined } from "@ant-design/icons"
 import { Layout, Menu, MenuProps,Row } from "antd";
 import logo from "../../assets/img/logo.png";
+import { IsAdmin,SessionData } from '../../helpers';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -21,18 +22,6 @@ function getItem(
   } as MenuItem;
 }
 
-const items: MenuProps['items'] = [
-
-  getItem('Inicio', '/home', <HomeOutlined />),
-  getItem('Libros', '', <ReadOutlined  />, [
-    getItem('Libros', 'book', <ReadOutlined  />),
-    getItem('Prestamos', 'loan', <ScheduleOutlined />),
-  ]),
-  getItem('Autores', 'author', <UserOutlined />),
-  getItem('Editoriales', 'publisher', <ContainerOutlined />),
-  getItem('Usuarios', 'user', <ControlOutlined  />),
-
-];
 
 const Sider = () => {
   const navigate = useNavigate();
@@ -41,6 +30,22 @@ const Sider = () => {
     let url =  e.key.split(',');
     navigate(url[0])
   }
+
+  const sessionData = SessionData() as IModelLoginRequest;
+
+  const items: MenuProps['items'] = [
+
+    getItem('Inicio', '/home', <HomeOutlined />),
+    getItem('Libros', '', <ReadOutlined  />, [
+      getItem('Libros', 'book', <ReadOutlined  />),
+      getItem('Prestamos', 'loan', <ScheduleOutlined />),
+    ]),
+    ...(IsAdmin(sessionData.role) ? [
+      getItem('Autores', '/authors', <UserOutlined />),
+      getItem('Editoriales', '/publishers', <ContainerOutlined />),
+      getItem('Usuarios', '/users', <ControlOutlined />),
+    ] : []),
+  ];
 
   return (
     <Layout.Sider
