@@ -1,52 +1,86 @@
-Se te encarga crear un sistema de gestión de bibliotecas que consista tanto en una API de
-backend desarrollada en .NET Core como en una aplicación frontend desarrollada en React.
-La API de backend se encargará de gestionar los libros en la biblioteca, mientras que el
-frontend de React consumirá esta API para mostrar e interactuar con los datos de la
-biblioteca.
+# Test para FullStack Ensitech
+-- Proyectos
+  -- BibliotecaApi
+  -- BibliotecaApp
 
-Requisitos del backend (API):
-  1. Crear un proyecto de API web .NET Core para servir como backend.
-  2. Implementar puntos finales RESTful para gestionar los libros en la biblioteca:
-  a. Agregar un libro
-  b. Eliminar un libro
-  c. Prestar un libro
-  d. Devolver un libro
-  e. Recuperar todos los libros
-  3. Vamos a utilizar Entity Framework e InMemoryDatabase para esta tarea. Todos
-  sabemos que no es adecuado para producción, pero en este escenario será
-  suficiente.
-  4. Asegurar el cumplimiento de los principios SOLID, especialmente el Principio de
-  Responsabilidad Única (SRP), el Principio de Inversión de Dependencias (DIP) y el
-  Principio de Abierto/Cerrado (OCP).
-  5. Implementar manejo adecuado de errores y validación para las solicitudes de la API.
-  Ejemplo: No se puede prestar un libro inexistente, o si tenemos 0 copias de un libro.
+## tecnologías:
 
-Requisitos del frontend (React):
-  1. Crear una aplicación React para servir como frontend del sistema de gestión de
-  bibliotecas.
-  2. Utilizar componentes funcionales y hooks para la gestión del estado y las
-  interacciones con la API.
-  3. Consumir la API de backend para mostrar la lista de libros en la biblioteca y permitir
-  a los usuarios realizar acciones como agregar, eliminar, prestar y devolver libros.
-  4. Implementar componentes separados para agregar, mostrar y gestionar libros.
-  5. Asegurar un manejo adecuado de eventos y actualizaciones de estado.
-  6. Implementar manejo adecuado de errores y mostrar mensajes de error al usuario
-  cuando sea necesario.
-  Requisitos generales:
-  1. Configurar una comunicación adecuada entre el frontend y el backend mediante
-  solicitudes HTTP (por ejemplo, fetch o axios).
-  2. Asegurar una validación adecuada de datos y manejo de errores tanto en el frontend
-  como en el backend.
-  3. Escribir pruebas unitarias para los puntos finales de la API de backend y cualquier
-  componente crítico del frontend.
-  4. Puntos extra por implementar mecanismos de autenticación y autorización para
-  restringir ciertas acciones (por ejemplo, prestar libros) a usuarios autenticados.
+- **Backend**
+Net Core SDK 8.0
 
-Notas adicionales:
-● Puedes optar por utilizar cualquier biblioteca o framework adicional que consideres
-apropiado para completar la tarea.
-● Presta atención a la arquitectura general, organización del código y documentación
-de tu solución.
-● La solución debe presentarse en un repositorio de Github / Gitlab con sus
-respectivos commits, se valorará el uso de ramas y commits adecuados.
-Crear un repositorio privado en github y compartirlo con @hectorbenitez
+- **Frontend**
+react 18.2.0
+node 20.11.0 
+npm 10.2.4
+vite 5.2.0
+typescript 5.2.2
+
+- **Bases de Datos**
+EF - InMemoryDatabase
+
+
+## Entorno
+
+Comando para verficar versiones de sdk dotnet instaladas, para desarrollo de este proyecto fue usado
+la versión netcore 8.0, pero esté puede ser corrido con versiones superiores, o en caso de usar
+Visual Studio, este solicitara la versión requerida en caso de no poder funcionar con la encontrada.
+
+```sh
+dotnet --list-sdks
+```
+## Visual Studio
+
+Para ejecución del proyecto estamos haciendo uso de Visual Studio Code 1.88.1
+
+### Configuraciones de entorno Backend (BibliotecaApi)
+
+1. Editar archivo launchSettings.json, clave applicationUrl, para agregar o modificar url de la aplicacion -- Por Defecto: http://localhost:5024
+2. Base de datos InMemoria Configurada en Program.cs en la linea 84 clave UseInMemoryDatabase con el nombre AuthorDb
+
+### Configuraciones de entorno Frontend (BibliotecaApp)
+
+1. Editar archivo .env, clave VITE_API_BASE_URL, para agregar o modificar url de la api -- Por Defecto: http://localhost:5024/api/
+
+## Data insertada 
+
+El Proyecto BibliotecaApi cuenta con una inserción de datos semillas configurada en el archivo DbModel/DBSeeder.cs
+la cual se inserta al iniciar el proyecto luego de crear en memoria la base de datos, este proceso es invocado
+en la línea 108 del archivo Program.cs 
+
+## Correr proyecto
+
+Una vez cumplido los requisitos para los proyectos debemos iniciarlos por serparo
+
+-- Proyectos
+  -- BibliotecaApi
+      comando: 
+        dotnet build
+        dotnet run
+  -- BibliotecaApp
+      comando: 
+        - npm install
+        - npm run dev
+
+Una vez se encuentre ejecutando los proyectos en local deberá poder acceder a este 
+haciendo uso de las siguientes URL locales
+
+> http://localhost:5024/api/swagger  -API
+> http://localhost:5173/             - APP
+
+## Acceso a las aplicaciones
+
+1) acceder ah: http://localhost:5173/   (o el puerto configurado para la aplicacion web)
+2) Ingresar credenciales
+
+Administrador
+- Admin
+- Superadmin@123
+
+Usuario1
+- Usuario1
+- Seguro@123
+
+Usuario2
+- Usuario2
+- Seguro@123
+
