@@ -1,13 +1,14 @@
+import { useState } from "react";
 import { Modal, Input, Form, DatePicker, Col,Button,Row,Divider } from "antd"
 import {UserOutlined,BookOutlined,SaveOutlined,CloseCircleOutlined,LoadingOutlined } from "@ant-design/icons"
 import {TypeAction,handleApiResponse} from "../../../helpers"
-import { loanService } from '../../../services';
+import { loanService} from '../../../services';
 import locale from "antd/lib/date-picker/locale/es_ES";
-import { useState } from "react";
 
 const LoanModal = ({ showModal, formData, onChange, Type }: PropLoan) => {
     const layout = { labelCol: { span: 8 }, wrapperCol: { span: 16 } };
     const [selectedDate, setSelectedDate] = useState("");
+    
 
     const handleDateChange = (date: moment.Moment | null) => {
         if (date) {
@@ -50,7 +51,7 @@ const LoanModal = ({ showModal, formData, onChange, Type }: PropLoan) => {
                 okButtonProps:{ disabled: false }
             });
         });
-    }
+    } 
     
     return(
         <Modal {...layout} open={showModal} destroyOnClose={true} onCancel={onChange} title={TypeAction(Type,"Prestamo")} footer={false} centered>
@@ -88,7 +89,7 @@ const LoanModal = ({ showModal, formData, onChange, Type }: PropLoan) => {
                         <Button type="default" onClick={onChange} icon={<CloseCircleOutlined />} >
                             Cerrar
                         </Button>
-                        <Button type="primary" htmlType="submit" icon={<SaveOutlined />}>
+                        <Button type="primary" htmlType="submit" icon={<SaveOutlined />} >
                             Guardar
                         </Button>
                     </Row>

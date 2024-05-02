@@ -5,11 +5,11 @@ import { BookService } from '../../services';
 import { BookModal } from "./components";
 import { LoanModal } from "../loan/components";
 import { IsAdmin,SessionData } from '../../helpers';
-const sessionData = SessionData() as IModelLoginRequest;
 const Search = Input.Search;
 
 const BookPage = () => {
 
+    const sessionData = SessionData() as IModelLoginRequest;
     const [loading, setLoading] = useState(false);
     const [lstBook, setLstBook] = useState([] as Array<IModelBook>);
     const [lstFilter, setLstFilter] = useState([] as Array<IModelBook>);
@@ -52,8 +52,7 @@ const BookPage = () => {
         Loan.autor = data.autor;
         Loan.editorial = data.editorial;
         Loan.libro = data.nombre;
-        //setLoan(Loan); 
-        console.log(Loan)
+        setLoan(Loan); 
         changeModalLoan();
     }
 
@@ -64,6 +63,7 @@ const BookPage = () => {
     }
 
     const createBook = () => {
+        setBook({} as IModelBook)
         setType(2);
         changeModal();
     }
