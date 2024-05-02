@@ -4,8 +4,8 @@ import { EditOutlined, LoadingOutlined, ScheduleOutlined } from '@ant-design/ico
 import { BookService } from '../../services';
 import { BookModal } from "./components";
 import { LoanModal } from "../loan/components";
-import { IsAdmin } from '../../helpers';
-
+import { IsAdmin,SessionData } from '../../helpers';
+const sessionData = SessionData() as IModelLoginRequest;
 const Search = Input.Search;
 
 const BookPage = () => {
@@ -16,7 +16,7 @@ const BookPage = () => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [isModalVisibleLoan, setIsModalVisibleLoan] = useState(false);
     const [Book, setBook] = useState({} as IModelBook);
-    const [Loan, setLoan] = useState({} as IModelLoan);
+    const [Loan, setLoan] = useState({} as IModelLoanModal);
     const [Type, setType] = useState(1);
 
     useEffect(() => {
@@ -46,8 +46,14 @@ const BookPage = () => {
     };
 
     const showLoan = (data: IModelBook) => {
-        Loan.libro = data;
-        setLoan(Loan); 
+        console.log(Loan)
+        Loan.id_Usuario = sessionData.idUser;
+        Loan.id_Libro = data.id;
+        Loan.autor = data.autor;
+        Loan.editorial = data.editorial;
+        Loan.libro = data.nombre;
+        //setLoan(Loan); 
+        console.log(Loan)
         changeModalLoan();
     }
 

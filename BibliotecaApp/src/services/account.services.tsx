@@ -22,6 +22,7 @@ class AccountService{
                 response.userName = dataToken.userName;
                 response.email = dataToken.email;
                 response.role = dataToken.role;
+                response.idUser = dataToken.idUser;
             }
         })
         .catch( error => {

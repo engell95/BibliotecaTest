@@ -9,7 +9,7 @@ namespace BibliotecaApi.Dtos
         public DateTime Fecha_Devolucion_Esperada { get; set; }
         public DateTime? Fecha_Devolucion_Real { get; set; }
         public LibroDto Libro { get; set; }
-        public string IdUsuario { get; set; }
+        public string Id_Usuario { get; set; }
         public string Usuario { get; set; } = "";
     }
 }

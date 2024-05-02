@@ -9,9 +9,9 @@ namespace BibliotecaApi.Dtos
         public string Descripcion { get; set; }  = "";
         public int Copias { get; set; } = 0;
         public DateTime Fecha_Publicacion { get; set; }
-        public int IdAutor { get; set; }
+        public int Id_Autor { get; set; }
         public string Autor { get; set; } = "";
-        public int IdEditorial { get; set; }
+        public int Id_Editorial { get; set; }
         public string Editorial { get; set; } = "";
     }
 }

@@ -11,7 +11,7 @@ namespace BibliotecaApi.Controllers
     [ApiVersion(1)]
     [Route("api/v{v:apiVersion}/[controller]")]
     [ApiController]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,Roles = "Administrador")]
+    
     public class PrestamoController : Controller
     {
         private readonly IPrestamoServices _prestamoServices;
@@ -22,6 +22,7 @@ namespace BibliotecaApi.Controllers
         // GET: api/version/Prestamo
         [MapToApiVersion(1)]
         [HttpGet()]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,Roles = "Administrador")]
         public async Task<IActionResult> Prestamos()
         {
             var result = await _prestamoServices.Prestamos();
@@ -31,6 +32,7 @@ namespace BibliotecaApi.Controllers
         // GET: api/version/Prestamo/5
         [MapToApiVersion(1)]
         [HttpGet("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,Roles = "Administrador,Estudiante")]
         public async Task<IActionResult> Prestamo(int id)
         {
             var result = await _prestamoServices.Prestamo(id);
@@ -40,6 +42,7 @@ namespace BibliotecaApi.Controllers
         // POST: api/version/Prestamo
         [MapToApiVersion(1)]
         [HttpPost()]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,Roles = "Administrador,Estudiante")]
         public async Task<IActionResult> CrearPrestamo([FromBody] PrestamoModel model)
         {
             var result = await _prestamoServices.CrearPrestamo(model);
@@ -49,6 +52,7 @@ namespace BibliotecaApi.Controllers
         // PUT: api/version/Prestamo/5
         [MapToApiVersion(1)]
         [HttpPut("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,Roles = "Administrador")]
         public async Task<IActionResult> ActualizarPrestamo(int id,PrestamoModel model)
         {
             var result = await _prestamoServices.ActualizarPrestamo(id,model);
@@ -58,6 +62,7 @@ namespace BibliotecaApi.Controllers
         // DELETE: api/version/Prestamo/5
         [MapToApiVersion(1)]
         [HttpDelete("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,Roles = "Administrador")]
         public async Task<IActionResult> EliminarPrestamo(int id)
         {
             var result = await _prestamoServices.EliminarPrestamo(id);
@@ -67,6 +72,7 @@ namespace BibliotecaApi.Controllers
         // PUT: api/version/Prestamo/5/Devolucion
         [MapToApiVersion(1)]
         [HttpPut("{id}/Devolucion")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,Roles = "Administrador,Estudiante")]
         public async Task<IActionResult> DevolverPrestamo(int id)
         {
             var result = await _prestamoServices.DevolverPrestamo(id);

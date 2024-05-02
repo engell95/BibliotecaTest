@@ -11,6 +11,7 @@ interface IModelLoginRequest {
     userName : string = '';
     email : string = '';
     role : string = '';
+    idUser : string = '';
 }
 
 interface IModelAuthorized {
@@ -28,7 +29,7 @@ interface IModelAlert {
 }
 
 interface IModelBook {
-    id: number;
+    id: number = 0;
     nombre: string;
     descripcion: string;
     copias: number;
@@ -62,7 +63,7 @@ interface IModelPublisher {
 
 interface PropLoan {
     showModal: boolean;
-    formData: IModelLoan;
+    formData: IModelLoanModal;
     onChange: (event: React.MouseEvent) => void;
     Type: number;
 }
@@ -73,7 +74,23 @@ interface IModelLoan {
     fecha_Devolucion_Esperada: string;
     fecha_Devolucion_Real: string | null;
     libro: IModelBook;
-    idUsuario: string;
+    id_Usuario: string;
     usuario: string;
+}
+
+interface IModelLoanRequest {
+    fecha_Devolucion: date;
+    id_Usuario: string;
+    id_Libro:number
+}
+
+interface IModelLoanModal {
+    id:number = 0;
+    fecha_Devolucion: string;
+    id_Usuario: string;
+    id_Libro:number;
+    autor:string;
+    libro:string;
+    editorial:string;
 }
 

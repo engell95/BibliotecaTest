@@ -35,7 +35,7 @@ namespace BibliotecaApi.Services
                         Fecha_Devolucion_Esperada = x.Fecha_Devolucion_Esperada,
                         Fecha_Devolucion_Real = x.Fecha_Devolucion_Real,
                         Libro = _libroServices.Libro(x.Id_Libro).Result.Datos,
-                        IdUsuario = x.Usuario.Id,
+                        Id_Usuario = x.Usuario.Id,
                         Usuario = x.Usuario.NormalizedUserName
                     }
                 )
@@ -67,7 +67,7 @@ namespace BibliotecaApi.Services
                         Fecha_Devolucion_Esperada = x.Fecha_Devolucion_Esperada,
                         Fecha_Devolucion_Real = x.Fecha_Devolucion_Real,
                         Libro = _libroServices.Libro(x.Id_Libro).Result.Datos,
-                        IdUsuario = x.Usuario.Id,
+                        Id_Usuario = x.Usuario.Id,
                         Usuario = x.Usuario.NormalizedUserName
                     }
                 )
