@@ -144,7 +144,7 @@ const BookPage = () => {
                     <Search type="search" placeholder="Buscar" onChange={e => search(e.target.value)}/>
                 </Col>
                 <Col>
-                    {IsAdmin
+                    {IsAdmin(sessionData.role)
                         ?<Button type="primary" onClick={() => createBook()}>Nuevo Libro</Button>
                         :<></>
                     }
@@ -159,7 +159,7 @@ const BookPage = () => {
                             style={{ marginBottom: 16 }}
                             cover={<img alt={book.nombre} src={`https://picsum.photos/150/150?random=${book.id}`} />}
                             actions={[
-                                <>  {IsAdmin?
+                                <>  {IsAdmin(sessionData.role)?
                                     <Space onClick={(e) => e.stopPropagation()} style={{ marginBottom: '1em' }}>
                                         <Button type="primary" icon={<EditOutlined />} onClick={() => editBook(book)}>Editar</Button>
                                         <Button type="default" icon={<EditOutlined />} onClick={() => deleteB(book.id)}>Eliminar</Button>
