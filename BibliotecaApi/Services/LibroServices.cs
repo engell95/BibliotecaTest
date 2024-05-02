@@ -33,9 +33,9 @@ namespace BibliotecaApi.Services
                         Descripcion =x.Descripcion,
                         Copias = x.Copias,
                         Fecha_Publicacion = x.Fecha_Publicacion,
-                        IdAutor = x.Autor.Id, 
+                        Id_Autor = x.Autor.Id, 
                         Autor = x.Autor.Nombre, 
-                        IdEditorial = x.Editorial.Id,
+                        Id_Editorial = x.Editorial.Id,
                         Editorial = x.Editorial.Nombre 
                     }
                 )
@@ -68,9 +68,9 @@ namespace BibliotecaApi.Services
                         Descripcion =x.Descripcion,
                         Copias = x.Copias,
                         Fecha_Publicacion = x.Fecha_Publicacion,
-                        IdAutor = x.Autor.Id, 
+                        Id_Autor = x.Autor.Id, 
                         Autor = x.Autor.Nombre, 
-                        IdEditorial = x.Editorial.Id,
+                        Id_Editorial = x.Editorial.Id,
                         Editorial = x.Editorial.Nombre 
                     }
                 )

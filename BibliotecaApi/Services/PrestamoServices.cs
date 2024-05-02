@@ -35,7 +35,7 @@ namespace BibliotecaApi.Services
                         Fecha_Devolucion_Esperada = x.Fecha_Devolucion_Esperada,
                         Fecha_Devolucion_Real = x.Fecha_Devolucion_Real,
                         Libro = _libroServices.Libro(x.Id_Libro).Result.Datos,
-                        IdUsuario = x.Usuario.Id,
+                        Id_Usuario = x.Usuario.Id,
                         Usuario = x.Usuario.NormalizedUserName
                     }
                 )
@@ -67,7 +67,7 @@ namespace BibliotecaApi.Services
                         Fecha_Devolucion_Esperada = x.Fecha_Devolucion_Esperada,
                         Fecha_Devolucion_Real = x.Fecha_Devolucion_Real,
                         Libro = _libroServices.Libro(x.Id_Libro).Result.Datos,
-                        IdUsuario = x.Usuario.Id,
+                        Id_Usuario = x.Usuario.Id,
                         Usuario = x.Usuario.NormalizedUserName
                     }
                 )
@@ -203,7 +203,7 @@ namespace BibliotecaApi.Services
                 libro.Copias = libro.Copias + 1;
 
                 await GuardarCambiosAsync();
-                return new BaseResult() { Mensaje = "Libro devuelto."};
+                return new BaseResult() { StatusCode = System.Net.HttpStatusCode.OK,Mensaje = "Libro devuelto."};
               
             }
             catch (Exception ex)
@@ -248,6 +248,39 @@ namespace BibliotecaApi.Services
             }
 
             return true;
+        }
+
+        public async Task<ResultResponse<List<PrestamoDto>>> PrestamosUsuario(string id){
+            try
+            {
+                   
+                var result = await _context.Prestamos.Where(x => x.Estado && x.Id_Usuario == id) 
+                .Include(x => x.Usuario) 
+                .Select(x => 
+                    new PrestamoDto { 
+                        Id = x.Id,
+                        Fecha_Prestamo = x.Fecha_Prestamo, 
+                        Fecha_Devolucion_Esperada = x.Fecha_Devolucion_Esperada,
+                        Fecha_Devolucion_Real = x.Fecha_Devolucion_Real,
+                        Libro = _libroServices.Libro(x.Id_Libro).Result.Datos,
+                        Id_Usuario = x.Usuario.Id,
+                        Usuario = x.Usuario.NormalizedUserName
+                    }
+                )
+                .ToListAsync();
+                
+                return new ResultResponse<List<PrestamoDto>>()
+                {
+                    StatusCode = System.Net.HttpStatusCode.OK,
+                    Mensaje = Mensajes.Listado(_objecto),
+                    Datos = result
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                return new ResultResponse<List<PrestamoDto>>(){ Mensaje = Mensajes.ErrorGenerado(ex.Message)};
+            }
         }
 
         private async Task<Libro> BuscarLibroAsync(int id)

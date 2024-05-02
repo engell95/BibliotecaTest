@@ -67,11 +67,13 @@ namespace BibliotecaApi.Controllers
         {
             string userName = model.UserName ?? "testUser";
             string mail = model.Email ?? "testUser";
+            string id = model.Id ?? "testUser";
             var roles = await userManager.GetRolesAsync(model);
             var claims = new List<Claim>()
             {
                 new Claim("userName", userName),
-                new Claim("email", mail)
+                new Claim("email", mail),
+                new Claim("idUser", id)
             };
             foreach (var role in roles)
             {
